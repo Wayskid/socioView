@@ -19,7 +19,7 @@ export default function SocioViewNews() {
     >
       <p className="text-xl font-medium">SocioView News</p>
       <ul className="newsBody grid gap-3">
-        {socioViewNewsResult.articles ? (
+        {socioViewNewsResult ? (
           socioViewNewsResult.articles
             .slice(0, 4)
             .map((n: { title: String; publishedAt: String }, i: Number) => {
