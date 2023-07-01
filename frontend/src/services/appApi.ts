@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const BASE_URL = "https://socioview.onrender.com";
+const BASE_URL = "https://socioview.onrender.com/api";
 
 export const appApi = createApi({
   reducerPath: "AppAPI",
