@@ -1,0 +1,50 @@
+.pl1 {
+  justify-content: space-around;
+  justify-self: center;
+  display: flex;
+  gap: 0.5rem;
+  height: 1rem;
+  margin-top: 1rem;
+
+  &__a,
+  &__b,
+  &__c {
+    width: 0.5em;
+    height: 0.5em;
+    transform-origin: 50% 100%;
+    animation: bounce1 1s linear infinite;
+  }
+
+  &__a {
+    background: #0caa49;
+  }
+  &__b {
+    background: #0caa49;
+    animation-delay: 0.1s;
+  }
+  &__c {
+    background: #0caa49;
+    animation-delay: 0.2s;
+  }
+}
+
+/* Animations */
+@keyframes bounce1 {
+  from,
+  to {
+    transform: translateY(0) scale(1, 1);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: translateY(1em) scale(1, 1);
+    animation-timing-function: linear;
+  }
+  50% {
+    transform: translateY(1em) scale(1.5, 0.5);
+    animation-timing-function: linear;
+  }
+  55% {
+    transform: translateY(1em) scale(1, 1);
+    animation-timing-function: ease-out;
+  }
+}

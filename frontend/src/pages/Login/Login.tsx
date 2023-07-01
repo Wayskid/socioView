@@ -1,0 +1,101 @@
+import { Link, useNavigate } from "react-router-dom";
+import logoIcon from "../../assets/img/socioview.png";
+import { MdEmail, MdLock } from "react-icons/md";
+import { useState, ChangeEvent, FormEvent, useContext } from "react";
+import { useLoginMutation } from "../../services/appApi";
+import AuthContext from "../../context/AuthContext";
+import { useAppDispatch } from "../../reduxHooks";
+import { setToken } from "../../store/features/authSlice";
+import FormInput from "../../components/form/FormInput";
+
+export default function Login() {
+  const navigate = useNavigate();
+
+  //Set user info
+  const { setCurrentUser } = useContext(AuthContext);
+  const dispatch = useAppDispatch();
+
+  // Register Form Array
+  const loginFormArray = [
+    {
+      Icon: <MdEmail />,
+      id: "emailOrUsername",
+      type: "text",
+      name: "emailOrUsername",
+      placeholder: "Enter Email or Username",
+      required: true,
+    },
+    {
+      Icon: <MdLock />,
+      id: "email",
+      type: "password",
+      name: "password",
+      placeholder: "Enter Password",
+      required: true,
+    },
+  ];
+
+  //Save Login inputs to state
+  const [loginDetails, setLoginDetails] = useState({
+    emailOrUsername: "",
+    password: "",
+  });
+
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
+    setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
+  }
+
+  //Handle login
+  const [login, { isError }] = useLoginMutation();
+
+  function handleLogin(e: FormEvent) {
+    e.preventDefault();
+    login(loginDetails)
+      .unwrap()
+      .then((fulfilled) => {
+        setCurrentUser(fulfilled);
+        dispatch(setToken(fulfilled.token));
+        navigate("/");
+      });
+  }
+
+  return (
+    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
+      <Link to="/" className="logo flex items-center gap-5">
+        <img src={logoIcon} alt="" className="w-10" />
+        <p className="text-3xl">SOCIOVIEW</p>
+      </Link>
+      <div className="loginForm bg-slate-800 rounded-lg py-10 px-5 grid gap-10 w-full relative">
+        <div className="grid gap-2 text-center">
+          <p className="text-2xl ">Welcome Back</p>
+          <p className="text-xs font-thin">
+            Please enter your login details to access your account
+          </p>
+        </div>
+        <form className="grid gap-5" onSubmit={handleLogin}>
+          {loginFormArray.map((input) => (
+            <FormInput
+              theme={false}
+              key={input.id}
+              {...input}
+              handleChange={handleInputChange}
+              value={loginDetails[input.name as keyof typeof loginDetails]}
+            />
+          ))}
+          <button className="socioViewBtns py-3">Login</button>
+          {isError && (
+            <p className="text-sm text-red-600 text-center absolute bottom-1 justify-self-center">
+              Incorrect email or password
+            </p>
+          )}
+        </form>
+      </div>
+      <div className="flex gap-2">
+        <p>Don't have an account?</p>
+        <Link to="/register" className="text-[#0caa49]">
+          Create an account
+        </Link>
+      </div>
+    </div>
+  );
+}

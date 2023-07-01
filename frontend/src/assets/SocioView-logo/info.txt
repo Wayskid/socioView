@@ -1,0 +1,18 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: LeagueMono-Thin
+font link: https://www.tylerfinck.com/shop/league-mono/
+font author: Tyler Finck
+font author site: https://www.tylerfinck.com/
+
+
+icon designer: Mundo
+icon designer link: /DMundo
+        
+
+fontColor: {"hex":"#ffffff"}
+bgColor: {"hex":"#0caa41"}
+iconColor: {"hex":"#ffffff"}
+
+      
