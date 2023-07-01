@@ -10,7 +10,9 @@ export const socioViewNewsApi = createApi({
   endpoints: (builder) => ({
     getSocioViewNews: builder.query({
       query: () => ({
-        url: "/top-headlines?country=us&category=technology&apiKey=cd9876fe2a63468887cd120da0121155",
+        url: `/top-headlines?country=us&category=technology&apiKey=${
+          import.meta.env.VITE_NEWS_API_KEY
+        }`,
         method: "get",
       }),
     }),

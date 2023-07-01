@@ -6,7 +6,6 @@ import Loader from "../../../components/ui/Loader";
 export default function SocioViewNews() {
   //Get socioView news
   const { data: socioViewNewsResult } = useGetSocioViewNewsQuery(undefined);
-  if (socioViewNewsResult) console.log(socioViewNewsResult);
 
   //Access light or dark mode
   const darkMode = useAppSelector((state) => state.app.darkMode);
