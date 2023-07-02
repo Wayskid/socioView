@@ -356,12 +356,11 @@ export const appApi = createApi({
       PostsTypes[],
       {
         token: String;
-        userId: String;
         keyword: String;
       }
     >({
-      query: ({ token, userId, keyword }) => ({
-        url: `/posts/${userId}/search?keyword=${keyword}`,
+      query: ({ token, keyword }) => ({
+        url: `/posts/search?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,
@@ -372,12 +371,11 @@ export const appApi = createApi({
       UserInfoType[],
       {
         token: String;
-        userId: String;
         keyword: String;
       }
     >({
-      query: ({ token, userId, keyword }) => ({
-        url: `/users/${userId}/search?keyword=${keyword}`,
+      query: ({ token, keyword }) => ({
+        url: `/users/search?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,

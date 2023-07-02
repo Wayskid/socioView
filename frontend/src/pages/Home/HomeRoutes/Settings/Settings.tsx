@@ -27,11 +27,16 @@ export default function Settings() {
     setSettingsVal({ ...settingsVal, [e.target.name]: e.target.value });
   }
 
-  //Handle Change Username
-  const [changeUsernameError, setChangeUsernameError] = useState("");
-  const [changeUsername, { isLoading: changingUsername }] =
-    useUsernameSettingMutation();
+  //Change Username
+  const [
+    changeUsername,
+    { isLoading: changingUsername, error: changeUsernameError },
+  ] = useUsernameSettingMutation();
 
+  //Error
+  const [changeUsernameErrorMsg, setChangeUsernameErrorMsg] = useState("");
+
+  //Handle Change Username
   function handleChangeUsername(e: FormEvent) {
     e.preventDefault();
 
@@ -41,20 +46,17 @@ export default function Settings() {
       newUsername: settingsVal.newUsername,
     })
       .unwrap()
-      .then((result) => {
-        if (result === "Username already taken") {
-          setChangeUsernameError(result);
-        } else {
-          setCurrentUser(result);
-          setChangeUsernameError("");
-        }
-      });
+      .then((result) => setCurrentUser(result))
+      .catch((error) => setChangeUsernameErrorMsg(error.data));
   }
 
-  //Handle Change Email
-  const [changeEmailError, setChangeEmailError] = useState("");
-  const [changeEmail, { isLoading: changingEmail }] = useEmailSettingMutation();
+  //Change Email
+  const [changeEmail, { isLoading: changingEmail, error: changeEmailError }] = useEmailSettingMutation();
 
+  //Error
+  const [changeEmailErrorMsg, setChangeEmailErrorMsg] = useState("");
+
+  //Handle Change Email
   function handleChangeEmail(e: FormEvent) {
     e.preventDefault();
     changeEmail({
@@ -63,14 +65,8 @@ export default function Settings() {
       newEmail: settingsVal.newEmail,
     })
       .unwrap()
-      .then((result) => {
-        if (result === "Email already exists") {
-          setChangeEmailError(result);
-        } else {
-          setCurrentUser(result);
-          setChangeEmailError("");
-        }
-      });
+      .then((result) => setCurrentUser(result))
+      .catch((error) => setChangeEmailErrorMsg(error.data));
   }
 
   //Show change password
@@ -108,16 +104,15 @@ export default function Settings() {
                 value={settingsVal.newUsername.toString()}
                 handleChange={handleInputChange}
                 pattern="^[A-Za-z0-9]{3,50}$"
+                required={true}
               />
               {settingsVal.newUsername !== currentUser.username && (
                 <button className="text-[2xl] text-[#0caa49]">SAVE</button>
               )}
             </form>
-            <p className="text-red-400 text-sm">
-              {!changingUsername &&
-                settingsVal.newUsername !== currentUser.username &&
-                changeUsernameError}
-            </p>
+            {changeUsernameError && (
+              <p className="text-red-400 text-sm">{changeUsernameErrorMsg}</p>
+            )}
           </div>
           <div className="grid gap-1">
             <p>Email</p>
@@ -133,16 +128,15 @@ export default function Settings() {
                 id="newEmail"
                 value={settingsVal.newEmail.toString()}
                 handleChange={handleInputChange}
+                required={true}
               />
               {settingsVal.newEmail !== currentUser.email && (
                 <button className="text-[2xl] text-[#0caa49]">SAVE</button>
               )}
             </form>
-            <p className="text-red-400 text-sm">
-              {!changingEmail &&
-                settingsVal.newEmail !== currentUser.email &&
-                changeEmailError}
-            </p>
+            {changeEmailError && (
+              <p className="text-red-400 text-sm">{changeEmailErrorMsg}</p>
+            )}
           </div>
           <div className="grid gap-2 justify-self-end">
             <button

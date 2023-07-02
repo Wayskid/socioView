@@ -162,9 +162,6 @@ export const getBookmarks = async (req, res) => {
 export const searchPosts = async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    const { userId } = req.params;
-
-    const user = User.findById(userId);
     const posts = await Post.find({
       postMsg: {
         $regex: keyword,

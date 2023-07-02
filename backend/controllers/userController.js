@@ -143,7 +143,7 @@ export const emailSetting = async (req, res) => {
     const user = await User.findById(userId);
 
     if (users.some((user) => user.email === newEmail)) {
-      res.status(200).json("Email already exists");
+      throw new Error("Email already exists");
     } else {
       user.email = newEmail;
       await Post.updateMany({ userId }, { email: newEmail });
@@ -167,7 +167,7 @@ export const emailSetting = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err.message);
   }
 };
 
@@ -175,9 +175,6 @@ export const emailSetting = async (req, res) => {
 export const searchUsers = async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    const { userId } = req.params;
-
-    // const user = await User.findById(userId);
     const users = await User.find({
       $or: [
         {

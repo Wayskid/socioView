@@ -1,8 +1,7 @@
 import FormInput from "../../../../components/form/FormInput";
 import { FiSearch } from "react-icons/fi";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
-import AuthContext from "../../../../context/AuthContext";
 import { useAppSelector } from "../../../../reduxHooks";
 import {
   useSearchPostsMutation,
@@ -20,7 +19,6 @@ export default function Search() {
 
   //Current user info
   const token = useAppSelector((state) => state.auth.token);
-  const { currentUser } = useContext(AuthContext);
 
   //Input state
   const [searchVal, setSearchVal] = useState("");
@@ -39,13 +37,11 @@ export default function Search() {
 
     searchUsers({
       token,
-      userId: currentUser._id,
       keyword: e.target.value.trim(),
     });
 
     searchPosts({
       token,
-      userId: currentUser._id,
       keyword: e.target.value.trim(),
     });
   }
