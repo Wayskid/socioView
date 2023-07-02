@@ -40,14 +40,14 @@ export default function ChooseUsername() {
       });
   }
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center relative">
+    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
       </Link>
       <div className="bg-slate-800 rounded-lg py-10 px-5 grid gap-10 w-full relative">
         <div className="grid gap-2 text-center">
-          <p className="text-xl ">Choose Username</p>
+          <p className="text-xl ">Set Username</p>
           <p className="text-xs font-thin">
             Choose username or skip to let us choose for you
           </p>
@@ -59,6 +59,7 @@ export default function ChooseUsername() {
             id="setUsername"
             name="setUsername"
             type="text"
+            placeholder="Choose username"
             handleChange={(e) => setNewUsername(e.target.value)}
             value={newUsername}
           />

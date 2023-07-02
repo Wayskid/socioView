@@ -42,7 +42,10 @@ export default function FollowCard({
             {user.name.length > 15 && "..."}
           </p>
           <div className="flex gap-2 text-slate-500 text-[12px]">
-            <p className="leading-[0.8] ">@{user.username}</p>
+            <p className="leading-[0.8] ">
+              @{user.username.slice(0,15)}
+              {user.username.length > 15 && "..."}
+            </p>
           </div>
         </div>
       </div>

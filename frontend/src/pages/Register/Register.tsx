@@ -1,13 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import logoIcon from "../../assets/img/socioview.png";
 import { MdEmail, MdLock, MdPerson } from "react-icons/md";
-import { AiFillPicture } from "react-icons/ai";
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { useRegisterUserMutation } from "../../services/appApi";
 import AuthContext from "../../context/AuthContext";
 import { useAppDispatch } from "../../reduxHooks";
 import { setToken, setIsReg } from "../../store/features/authSlice";
-import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import Loader from "../../components/ui/Loader";
 import FormInput from "../../components/form/FormInput";
 
@@ -20,7 +18,6 @@ export default function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-    profilePic: "",
   });
   // const [imgUploadDet, { isLoading: loading }] =
   //   useUploadToCloudinaryMutation();
@@ -81,31 +78,6 @@ export default function Register() {
   function handleRegister(e: FormEvent) {
     e.preventDefault();
 
-    // if (registerDetails.profilePic) {
-    //   const imgFile = registerDetails.profilePic[0];
-
-    //     //Upload to cloudinary
-    //     const imageData = new FormData();
-    //     imageData.append("file", imgFile);
-    //     imageData.append("upload_preset", "SocioView");
-    //     imageData.append("cloud_name", "diiohnshc");
-
-    //     // Handle register user with image and save user information
-    //     imgUploadDet(imageData)
-    //       .unwrap()
-    //       .then((fulfilled) => {
-    //         registerUser({
-    //           ...registerDetails,
-    //           profilePic: fulfilled.secure_url.toString(),
-    //         })
-    //           .unwrap()
-    //           .then((result) => {
-    //             setCurrentUser(result);
-    //             dispatch(setToken(result.token));
-    //             navigate("/");
-    //           });
-    //       });
-    //   }
     if (
       registerDetails.name &&
       registerDetails.email &&
@@ -118,7 +90,7 @@ export default function Register() {
           setCurrentUser(result);
           dispatch(setToken(result.token));
           dispatch(setIsReg(true));
-          navigate("/username");
+          navigate("/chooseUsername");
         });
     }
   }

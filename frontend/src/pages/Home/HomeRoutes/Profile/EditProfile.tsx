@@ -3,12 +3,13 @@ import { useEditProfileMutation } from "../../../../services/appApi";
 import { useUploadToCloudinaryMutation } from "../../../../services/cloudinaryApi";
 import AuthContext from "../../../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../../../reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../../../reduxHooks";
 import Loader from "../../../../components/ui/Loader";
 import FormInput from "../../../../components/form/FormInput";
 import { BiUser, BiWorld, BiEdit } from "react-icons/bi";
 import { RiImageEditLine } from "react-icons/ri";
 import { TbArrowsExchange } from "react-icons/tb";
+import { setAlertMsg, setShowAlert } from "../../../../store/features/appSlice";
 
 export default function EditProfile() {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -24,6 +25,7 @@ export default function EditProfile() {
   const [profileUpdate, { isLoading: updatingProfile }] =
     useEditProfileMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   //Save edit profile inputs to state
   function handleInput(e: ChangeEvent<HTMLInputElement>) {
@@ -66,6 +68,8 @@ export default function EditProfile() {
             .then((result) => {
               setCurrentUser(result);
               navigate(`/profile/${currentUser.username}`);
+              dispatch(setAlertMsg("Profile Updated"));
+              dispatch(setShowAlert(true));
             });
         });
     }
@@ -89,6 +93,8 @@ export default function EditProfile() {
         .then((fulfilled) => {
           setCurrentUser(fulfilled);
           navigate(`/profile/${currentUser.username}`);
+          dispatch(setAlertMsg("Profile Updated"));
+          dispatch(setShowAlert(true));
         });
     }
   }
@@ -218,12 +224,16 @@ export default function EditProfile() {
           </div>
         </div>
       </div>
-      {updatingProfile ||
-        (uploadingImg && (
-          <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
-            <Loader />
-          </div>
-        ))}
+      {updatingProfile && (
+        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
+          <Loader />
+        </div>
+      )}
+      {uploadingImg && (
+        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

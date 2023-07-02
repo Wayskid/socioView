@@ -5,6 +5,8 @@ interface appInitialStateType {
   imageToShow: String;
   showImage: Boolean;
   darkMode: Boolean;
+  alertMsg: String;
+  showAlert: Boolean;
 }
 
 const initialState: appInitialStateType = {
@@ -12,6 +14,8 @@ const initialState: appInitialStateType = {
   imageToShow: "",
   showImage: false,
   darkMode: false,
+  alertMsg: "",
+  showAlert: false,
 };
 
 export const AppSlice = createSlice({
@@ -27,9 +31,15 @@ export const AppSlice = createSlice({
     setShowImage: (state) => {
       state.showImage = !state.showImage;
     },
-    setDarkMode: (state)=>{
-      state.darkMode = !state.darkMode
-    }
+    setDarkMode: (state) => {
+      state.darkMode = !state.darkMode;
+    },
+    setAlertMsg: (state, action: PayloadAction<String>) => {
+      state.alertMsg = action.payload;
+    },
+    setShowAlert: (state, action: PayloadAction<Boolean>) => {
+      state.showAlert = action.payload;
+    },
   },
 });
 
@@ -38,5 +48,7 @@ export const {
   setImageToShow,
   setShowImage,
   setDarkMode,
+  setAlertMsg,
+  setShowAlert,
 } = AppSlice.actions;
 export default AppSlice.reducer;

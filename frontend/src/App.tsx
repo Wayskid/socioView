@@ -22,6 +22,7 @@ import SearchPosts from "./pages/Home/HomeRoutes/Search/SearchPosts";
 import SearchAll from "./pages/Home/HomeRoutes/Search/SearchAll";
 import ChangePassword from "./pages/Home/HomeRoutes/Settings/ChangePassword";
 import ImageModal from "./components/ui/ImageModal";
+import Alerts from "./components/ui/Alerts";
 
 function App() {
   const { token, isReg } = useAppSelector((state) => state.auth);
@@ -31,7 +32,10 @@ function App() {
   return (
     <div className="app">
       <Routes>
-        <Route path="/" element={token ? <Home /> : <Navigate to="login" />}>
+        <Route
+          path="/"
+          element={token && !isReg ? <Home /> : <Navigate to="login" />}
+        >
           <Route index element={<Feed />}></Route>
           <Route path="bookmarks" element={<Bookmarks />}></Route>
           <Route path="search" element={<Search />}>
@@ -59,11 +63,11 @@ function App() {
         </Route>
         <Route
           path="login"
-          element={token ? <Navigate to="/" /> : <Login />}
+          element={token && !isReg ? <Navigate to="/" /> : <Login />}
         ></Route>
         <Route
           path="register"
-          element={token ? <Navigate to="/" /> : <Register />}
+          element={token && !isReg ? <Navigate to="/" /> : <Register />}
         ></Route>
         <Route
           path="chooseUsername"
@@ -77,6 +81,7 @@ function App() {
 
       {openCloseChangePassword && <ChangePassword />}
       {showImage && <ImageModal />}
+      <Alerts />
     </div>
   );
 }

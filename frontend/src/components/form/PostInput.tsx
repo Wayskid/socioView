@@ -6,6 +6,7 @@ import AuthContext from "../../context/AuthContext";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import { BiX } from "react-icons/bi";
 import Loader from "../ui/Loader";
+import { Link } from "react-router-dom";
 
 export default function PostInput() {
   const { currentUser } = useContext(AuthContext);
@@ -100,11 +101,13 @@ export default function PostInput() {
       onSubmit={handleCreatePost}
     >
       <div className="flex gap-3">
-        <img
-          src={currentUser.profilePic}
-          alt="profile"
-          className="w-10 h-10 rounded-md object-cover"
-        />
+        <Link to={`/profile/${currentUser.username}`}>
+          <img
+            src={currentUser.profilePic}
+            alt="profile"
+            className="w-10 h-10 rounded-md object-cover"
+          />
+        </Link>
         <input
           name="postMsg"
           placeholder="Write a post"

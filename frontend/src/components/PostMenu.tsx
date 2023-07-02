@@ -6,10 +6,11 @@ import {
   useDeletePostMutation,
   useUpdateFollowMutation,
 } from "../services/appApi";
-import { useAppSelector } from "../reduxHooks";
+import { useAppDispatch, useAppSelector } from "../reduxHooks";
 import { ImBin } from "react-icons/im";
 import { RiUserFollowLine } from "react-icons/ri";
 import { BsBookmark } from "react-icons/bs";
+import { setAlertMsg, setShowAlert } from "../store/features/appSlice";
 
 export default function PostMenu({
   postMenuShown,
@@ -32,6 +33,7 @@ export default function PostMenu({
 
   //Access light or dark mode
   const darkMode = useAppSelector((state) => state.app.darkMode);
+  const dispatch = useAppDispatch();
 
   return (
     <motion.div
@@ -50,6 +52,19 @@ export default function PostMenu({
         }`}
         onClick={() =>
           addToBoomark({ token, postId: post._id, userId: currentUser._id })
+            .unwrap()
+            .then(() => {
+              dispatch(
+                setAlertMsg(
+                  `${
+                    post.bookmarks.includes(currentUser._id)
+                      ? "Removed from"
+                      : "Added to"
+                  } Bookmarks`
+                )
+              );
+              dispatch(setShowAlert(true));
+            })
         }
       >
         <BsBookmark />
@@ -76,7 +91,8 @@ export default function PostMenu({
           {currentUser.following.some((item) => item === post.userId)
             ? "Unfollow "
             : "Follow "}
-          @{post.username}
+          @{post.username.slice(0, 5)}
+          {post.username.length > 5 && "..."}
         </button>
       )}
       {currentUser._id === post.userId && (

@@ -61,7 +61,7 @@ export default function Login() {
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center relative">
+    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>

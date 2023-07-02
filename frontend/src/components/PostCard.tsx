@@ -54,9 +54,15 @@ export default function PostCard({ post }: { post: PostsTypes }) {
             className="w-10 h-10 rounded-md object-cover"
           />
           <div className="grid content-center">
-            <p className="text-lg leading-[1]">{post.name}</p>
+            <p className="text-lg leading-[1]">
+              {post.name.slice(0, 10)}
+              {post.name.length > 10 && "..."}
+            </p>
             <div className="flex gap-2 text-slate-500 text-[14px] items-center">
-              <p className="text-[15px]">@{post.username}</p>
+              <p className="text-[15px]">
+                @{post.username.slice(0, 10)}
+                {post.username.length > 10 && "..."}
+              </p>
               <p className="self-end">&#x2022;</p>
               <p className="self-end">
                 {moment(post.createdAt.toString()).fromNow()}
