@@ -6,7 +6,7 @@ import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { useRegisterUserMutation } from "../../services/appApi";
 import AuthContext from "../../context/AuthContext";
 import { useAppDispatch } from "../../reduxHooks";
-import { setToken } from "../../store/features/authSlice";
+import { setToken, setIsReg } from "../../store/features/authSlice";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import Loader from "../../components/ui/Loader";
 import FormInput from "../../components/form/FormInput";
@@ -22,9 +22,10 @@ export default function Register() {
     confirmPassword: "",
     profilePic: "",
   });
-  const [imgUploadDet, { isLoading: loading }] =
-    useUploadToCloudinaryMutation();
-  const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
+  // const [imgUploadDet, { isLoading: loading }] =
+  //   useUploadToCloudinaryMutation();
+  const [registerUser, { isLoading: Registering, isError }] =
+    useRegisterUserMutation();
 
   // Register Form Array
   const regFormArray = [
@@ -46,7 +47,6 @@ export default function Register() {
       placeholder: "Enter Email",
       required: true,
       errMsg: "Please provide a valid email",
-      // pattern: "^[A-Za-z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{5,50}$",
     },
     {
       Icon: <MdLock />,
@@ -67,77 +67,64 @@ export default function Register() {
       errMsg: "Passwords don't match",
       pattern: registerDetails.password,
     },
-    {
-      Icon: <AiFillPicture />,
-      id: "profilePic",
-      type: "File",
-      name: "profilePic",
-      placeholder: "",
-    },
   ];
 
   //Save Login inputs to state
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setRegisterDetails({
       ...registerDetails,
-      [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value,
+      [e.target.name]: e.target.value,
     });
   }
 
-  //Upload image file to cloudinary and Trigger register api
+  //Handle register user
   function handleRegister(e: FormEvent) {
     e.preventDefault();
-    if (registerDetails.profilePic) {
-      const imgFile = registerDetails.profilePic[0];
 
-      //Upload to cloudinary
-      const imageData = new FormData();
-      imageData.append("file", imgFile);
-      imageData.append("upload_preset", "SocioView");
-      imageData.append("cloud_name", "diiohnshc");
+    // if (registerDetails.profilePic) {
+    //   const imgFile = registerDetails.profilePic[0];
 
-      // Handle register user with image and save user information
-      imgUploadDet(imageData)
-        .unwrap()
-        .then((fulfilled) => {
-          registerUser({
-            ...registerDetails,
-            profilePic: fulfilled.secure_url.toString(),
-          })
-            .unwrap()
-            .then((result) => {
-              setCurrentUser(result);
-              dispatch(setToken(result.token));
-              navigate("/");
-            });
-        });
-    }
+    //     //Upload to cloudinary
+    //     const imageData = new FormData();
+    //     imageData.append("file", imgFile);
+    //     imageData.append("upload_preset", "SocioView");
+    //     imageData.append("cloud_name", "diiohnshc");
 
-    //Handle register user without image and save user information
+    //     // Handle register user with image and save user information
+    //     imgUploadDet(imageData)
+    //       .unwrap()
+    //       .then((fulfilled) => {
+    //         registerUser({
+    //           ...registerDetails,
+    //           profilePic: fulfilled.secure_url.toString(),
+    //         })
+    //           .unwrap()
+    //           .then((result) => {
+    //             setCurrentUser(result);
+    //             dispatch(setToken(result.token));
+    //             navigate("/");
+    //           });
+    //       });
+    //   }
     if (
-      !registerDetails.profilePic &&
-      (registerDetails.name ||
-        registerDetails.email ||
-        registerDetails.password ||
-        registerDetails.confirmPassword)
+      registerDetails.name &&
+      registerDetails.email &&
+      registerDetails.password &&
+      registerDetails.confirmPassword
     ) {
-      registerUser({
-        ...registerDetails,
-        profilePic:
-          "https://res.cloudinary.com/diiohnshc/image/upload/v1686843684/SocioView/qswse5icfrcrzv6wdatp.png",
-      })
+      registerUser(registerDetails)
         .unwrap()
         .then((result) => {
           setCurrentUser(result);
           dispatch(setToken(result.token));
-          navigate("/");
+          dispatch(setIsReg(true));
+          navigate("/username");
         });
     }
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(30rem,90%)] justify-self-center py-8">
+    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(30rem,90%)] justify-self-center py-8 relative">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
@@ -178,12 +165,11 @@ export default function Register() {
           Login
         </Link>
       </div>
-      {isLoading ||
-        (loading && (
-          <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
-            <Loader />
-          </div>
-        ))}
+      {Registering && (
+        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

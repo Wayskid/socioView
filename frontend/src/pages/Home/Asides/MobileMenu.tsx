@@ -7,6 +7,7 @@ import {
   BiUser,
   BiLogOut,
   BiSun,
+  BiMoon,
 } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -122,7 +123,7 @@ export default function MobileMenu({
         </Link>
       </div>
 
-      <div className="grid gap-1 justify-start font-medium">
+      <div className="grid gap-1 justify-start font-medium text-lg">
         <button
           className="hover:bg-slate-700 flex items-center gap-3 hover:bg-transparent"
           onClick={() => {
@@ -130,8 +131,17 @@ export default function MobileMenu({
             dispatch(setDarkMode());
           }}
         >
-          <BiSun />
-          <p>Light Mode</p>
+          {darkMode ? (
+            <>
+              <BiSun />
+              <p>Light Mode</p>
+            </>
+          ) : (
+            <>
+              <BiMoon />
+              <p>Dark Mode</p>
+            </>
+          )}
         </button>
         <button
           className="hover:bg-slate-700 flex items-center gap-3 hover:bg-transparent"

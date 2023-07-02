@@ -4,7 +4,7 @@ import AuthContext from "../../../context/AuthContext";
 import { setToken } from "../../../store/features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../../reduxHooks";
 import { Link } from "react-router-dom";
-import { BiLogOut, BiSun, BiUser } from "react-icons/bi";
+import { BiLogOut, BiMoon, BiSun, BiUser } from "react-icons/bi";
 import { setDarkMode } from "../../../store/features/appSlice";
 
 export default function NavProfileMenu({
@@ -52,8 +52,17 @@ export default function NavProfileMenu({
           dispatch(setDarkMode());
         }}
       >
-        <BiSun />
-        Light mode
+        {darkMode ? (
+          <>
+            <BiSun />
+            <p>Light Mode</p>
+          </>
+        ) : (
+          <>
+            <BiMoon />
+            <p>Dark Mode</p>
+          </>
+        )}
       </button>
       <button
         className={`py-3  ease-in flex items-center justify-center gap-1 ${

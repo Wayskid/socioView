@@ -7,6 +7,7 @@ import AuthContext from "../../context/AuthContext";
 import { useAppDispatch } from "../../reduxHooks";
 import { setToken } from "../../store/features/authSlice";
 import FormInput from "../../components/form/FormInput";
+import Loader from "../../components/ui/Loader";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export default function Login() {
   }
 
   //Handle login
-  const [login, { isError }] = useLoginMutation();
+  const [login, { isError, isLoading: loggingIn }] = useLoginMutation();
 
   function handleLogin(e: FormEvent) {
     e.preventDefault();
@@ -60,14 +61,14 @@ export default function Login() {
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
+    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center relative">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
       </Link>
       <div className="loginForm bg-slate-800 rounded-lg py-10 px-5 grid gap-10 w-full relative">
         <div className="grid gap-2 text-center">
-          <p className="text-2xl ">Welcome Back</p>
+          <p className="text-xl ">Welcome Back</p>
           <p className="text-xs font-thin">
             Please enter your login details to access your account
           </p>
@@ -96,6 +97,11 @@ export default function Login() {
           Create an account
         </Link>
       </div>
+      {loggingIn && (
+        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

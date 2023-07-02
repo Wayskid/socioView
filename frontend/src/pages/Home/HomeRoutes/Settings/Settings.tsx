@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import AuthContext from "../../../../context/AuthContext";
 import { Link } from "react-router-dom";
 import {
@@ -32,7 +32,9 @@ export default function Settings() {
   const [changeUsername, { isLoading: changingUsername }] =
     useUsernameSettingMutation();
 
-  function handleChangeUsername() {
+  function handleChangeUsername(e: FormEvent) {
+    e.preventDefault();
+
     changeUsername({
       token,
       userId: currentUser._id,
@@ -53,7 +55,8 @@ export default function Settings() {
   const [changeEmailError, setChangeEmailError] = useState("");
   const [changeEmail, { isLoading: changingEmail }] = useEmailSettingMutation();
 
-  function handleChangeEmail() {
+  function handleChangeEmail(e: FormEvent) {
+    e.preventDefault();
     changeEmail({
       token,
       userId: currentUser._id,
@@ -78,7 +81,7 @@ export default function Settings() {
 
   return (
     <div
-      className={`grid  md:rounded-lg h-full ${
+      className={`grid relative md:rounded-lg h-full ${
         darkMode ? "bg-[#1d2226]" : "bg-white"
       }`}
     >
@@ -130,7 +133,6 @@ export default function Settings() {
                 id="newEmail"
                 value={settingsVal.newEmail.toString()}
                 handleChange={handleInputChange}
-                // pattern="^[A-Za-z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{5,50}$"
               />
               {settingsVal.newEmail !== currentUser.email && (
                 <button className="text-[2xl] text-[#0caa49]">SAVE</button>

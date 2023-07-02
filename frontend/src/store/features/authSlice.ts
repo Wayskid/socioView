@@ -1,7 +1,13 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-const initialState: initialStateType = {
+interface AuthInitialStateType {
+  token: String;
+  isReg: Boolean;
+}
+
+const initialState: AuthInitialStateType = {
   token: "",
+  isReg: false,
 };
 
 export const AuthSlice = createSlice({
@@ -11,8 +17,11 @@ export const AuthSlice = createSlice({
     setToken: (state, action: PayloadAction<String>) => {
       state.token = action.payload;
     },
+    setIsReg: (state, action: PayloadAction<Boolean>) => {
+      state.isReg = action.payload;
+    },
   },
 });
 
-export const { setToken } = AuthSlice.actions;
+export const { setToken, setIsReg } = AuthSlice.actions;
 export default AuthSlice.reducer;

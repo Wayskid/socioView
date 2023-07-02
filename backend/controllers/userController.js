@@ -8,7 +8,7 @@ import Comment from "../models/commentModel.js";
 //Register
 export const Register = async (req, res) => {
   try {
-    const { name, email, password, profilePic } = req.body;
+    const { name, email, password } = req.body;
 
     //Check if user exists
     const userExists = await User.findOne({ email });
@@ -32,7 +32,8 @@ export const Register = async (req, res) => {
       email,
       username: generatedUsername,
       password: passwordHash,
-      profilePic,
+      profilePic:
+        "https://res.cloudinary.com/diiohnshc/image/upload/v1687024753/SocioView/wvx4d40egtfrpoipnvqi.png",
     });
 
     const savedUser = await newUser.save();

@@ -38,7 +38,7 @@ export default function FormInput({
           id={id}
           type={type}
           name={name}
-          className={`w-full ${
+          className={`formInput w-full ${
             !theme && "bg-slate-700"
           } rounded-md border-[1px] border-transparent focus:border-[#0caa49] py-2 pr-3 pl-11 outline-none transition-all ${
             theme && darkMode ? "bg-[#292e33]" : "bg-slate-300"
@@ -54,9 +54,9 @@ export default function FormInput({
         <div
           className={`regDiv text-sm text-red-400 px-1 overflow-hidden ease-in-out`}
         >
-          {errMsg && <p className="">{errMsg}</p>}
+          {errMsg && <p>{errMsg}</p>}
         </div>
-        <div className="formIcon text-[1.2rem] absolute left-3 top-[0.65rem] grid items-center">
+        <div className="formIcon text-[1.2rem] absolute left-3 top-[0.7rem] grid items-center">
           {Icon}
         </div>
       </label>

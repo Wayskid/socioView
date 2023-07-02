@@ -1,9 +1,6 @@
 export {};
 
 declare global {
-  interface initialStateType {
-    token: String;
-  }
 
   interface AppContextTypes {
     followersData: UserInfoType[] | undefined;
@@ -31,7 +28,6 @@ declare global {
     email: string;
     password: string;
     confirmPassword: string;
-    profilePic: string;
   }
 
   interface LoginDetTypes {

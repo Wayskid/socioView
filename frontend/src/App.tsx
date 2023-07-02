@@ -2,6 +2,8 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
+import ChooseUsername from "./pages/Register/ChooseUsername";
+import Avatar from "./pages/Register/Avatar";
 import { useAppSelector } from "./reduxHooks";
 import EditProfile from "./pages/Home/HomeRoutes/Profile/EditProfile";
 import Followers from "./pages/Home/HomeRoutes/Profile/UserFollows/Followers";
@@ -22,7 +24,7 @@ import ChangePassword from "./pages/Home/HomeRoutes/Settings/ChangePassword";
 import ImageModal from "./components/ui/ImageModal";
 
 function App() {
-  const token = useAppSelector((state) => state.auth.token);
+  const { token, isReg } = useAppSelector((state) => state.auth);
   const { openCloseChangePassword, showImage } = useAppSelector(
     (state) => state.app
   );
@@ -62,6 +64,14 @@ function App() {
         <Route
           path="register"
           element={token ? <Navigate to="/" /> : <Register />}
+        ></Route>
+        <Route
+          path="chooseUsername"
+          element={isReg ? <ChooseUsername /> : <Navigate to="/register" />}
+        ></Route>
+        <Route
+          path="avatar"
+          element={isReg ? <Avatar /> : <Navigate to="/register" />}
         ></Route>
       </Routes>
 
