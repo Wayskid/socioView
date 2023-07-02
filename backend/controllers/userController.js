@@ -106,7 +106,7 @@ export const usernameSetting = async (req, res) => {
     const user = await User.findById(userId);
 
     if (users.some((user) => user.username === newUsername)) {
-      res.status(200).json("Username already taken");
+      throw new Error("Username already taken");
     } else {
       user.username = newUsername;
       await Post.updateMany({ userId }, { username: newUsername });
@@ -130,7 +130,7 @@ export const usernameSetting = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err.message);
   }
 };
 
