@@ -165,7 +165,7 @@ export const searchPosts = async (req, res) => {
     const posts = await Post.find({
       $or: [
         {
-          postMsg: {
+          username: {
             $regex: keyword,
             $options: "i",
           },

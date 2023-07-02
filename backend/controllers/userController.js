@@ -198,7 +198,7 @@ export const searchUsers = async (req, res) => {
   }
 };
 
-//Search Users
+//Change password
 export const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
