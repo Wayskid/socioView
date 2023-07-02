@@ -162,6 +162,7 @@ export const getBookmarks = async (req, res) => {
 export const searchPosts = async (req, res) => {
   try {
     const keyword = req.query.keyword;
+    console.log(keyword);
     const posts = await Post.find({
       $or: [
         {
@@ -172,7 +173,6 @@ export const searchPosts = async (req, res) => {
         },
       ],
     });
-    console.log(posts);
 
     res.status(200).json(posts);
   } catch (error) {

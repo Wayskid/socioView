@@ -360,7 +360,7 @@ export const appApi = createApi({
       }
     >({
       query: ({ token, keyword }) => ({
-        url: `/posts/search?keyword=${keyword}`,
+        url: `/posts/search/posts?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,
@@ -375,7 +375,7 @@ export const appApi = createApi({
       }
     >({
       query: ({ token, keyword }) => ({
-        url: `/users/search?keyword=${keyword}`,
+        url: `/users/search/users?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,

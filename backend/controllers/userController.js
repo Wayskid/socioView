@@ -175,6 +175,7 @@ export const emailSetting = async (req, res) => {
 export const searchUsers = async (req, res) => {
   try {
     const keyword = req.query.keyword;
+    console.log(keyword);
     const users = await User.find({
       $or: [
         {
