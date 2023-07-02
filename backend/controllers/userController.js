@@ -13,16 +13,10 @@ export const Register = async (req, res) => {
     //Check if user exists
     const userExists = await User.findOne({ email });
 
-    if (userExists) return res.status(400).json({ msg: "User already exist." });
+    if (userExists) throw new Error("User already exist");
 
     //Generate random username from email
     const generatedUsername = generateFromEmail(email, 3);
-
-    //Check if generated username is already taken
-    const usernameExists = await User.findOne({ generatedUsername });
-
-    if (usernameExists)
-      return res.status(400).json({ msg: "Username already taken." });
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -56,7 +50,7 @@ export const Register = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err.message);
   }
 };
 

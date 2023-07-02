@@ -36,6 +36,7 @@ export default function ChooseUsername() {
           console.log("ALready taken");
         } else {
           setCurrentUser(result);
+          navigate("/avatar");
         }
       });
   }
