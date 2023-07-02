@@ -42,6 +42,6 @@ postRoute.post("/:userId/bookmark/:postId", addToBookmark);
 postRoute.get("/:userId/bookmark", getBookmarks);
 
 //Search posts
-postRoute.get("/search", searchPosts);
+postRoute.get("/search_posts", searchPosts);
 
 export default postRoute;

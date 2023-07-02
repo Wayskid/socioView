@@ -21,7 +21,7 @@ usersRoute.patch("/settings/username/:userId", usernameSetting);
 usersRoute.patch("/settings/email/:userId", emailSetting);
 
 //Search users
-usersRoute.get("/search", searchUsers);
+usersRoute.get("/search_users", searchUsers);
 
 //Change password
 usersRoute.patch("/settings/password/:userId", changePassword);
