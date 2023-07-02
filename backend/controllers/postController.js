@@ -163,10 +163,14 @@ export const searchPosts = async (req, res) => {
   try {
     const keyword = req.query.keyword;
     const posts = await Post.find({
-      postMsg: {
-        $regex: keyword,
-        $options: "i",
-      },
+      $or: [
+        {
+          postMsg: {
+            $regex: keyword,
+            $options: "i",
+          },
+        },
+      ],
     });
 
     res.status(200).json(posts);

@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const BASE_URL = "https://socioview.onrender.com/api";
-// const BASE_URL = "http://localhost:3000/api";
 
 export const appApi = createApi({
   reducerPath: "AppAPI",
@@ -361,7 +360,7 @@ export const appApi = createApi({
       }
     >({
       query: ({ token, keyword }) => ({
-        url: `/posts/search_posts?keyword=${keyword}`,
+        url: `/posts/search?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,
@@ -376,7 +375,7 @@ export const appApi = createApi({
       }
     >({
       query: ({ token, keyword }) => ({
-        url: `/users/search_users?keyword=${keyword}`,
+        url: `/users/search?keyword=${keyword}`,
         method: "get",
         headers: {
           authorization: `Bearer ${token}`,
