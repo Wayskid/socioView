@@ -10,6 +10,7 @@ export default function SearchAll() {
     searchingUsers,
     searchedPostsData,
     searchingPosts,
+    searchVal,
   } = useSearchVal();
 
   return (
@@ -58,6 +59,14 @@ export default function SearchAll() {
       ) : (
         <Loader />
       )}
+      {searchedUserData &&
+        searchedPostsData &&
+        searchedUserData.length === 0 &&
+        searchedPostsData.length === 0 && (
+          <p className="text-center text-slate-500 mt-3">
+            Cannot find "{searchVal}"
+          </p>
+        )}
     </div>
   );
 }

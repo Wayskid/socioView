@@ -4,7 +4,7 @@ import { useSearchVal } from "./Search";
 
 export default function SearchPosts() {
   //Access outlet context
-  const { searchedPostsData, searchingPosts } = useSearchVal();
+  const { searchedPostsData, searchingPosts, searchVal } = useSearchVal();
 
   return (
     <div className="grid p-3">
@@ -14,6 +14,11 @@ export default function SearchPosts() {
         ))
       ) : (
         <Loader />
+      )}
+      {searchedPostsData && searchedPostsData.length === 0 && (
+        <p className="text-center text-slate-500 mt-3">
+          Cannot find "{searchVal}"
+        </p>
       )}
     </div>
   );
