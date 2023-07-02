@@ -23,8 +23,8 @@ app.use(bodyParser.json({ limit: "30md", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30md", extended: true }));
 
 const corsOrigin = {
-  // origin: "https://socioview.netlify.app",
-  origin: "http://localhost:5173",
+  origin: "https://socioview.netlify.app",
+  // origin: "http://localhost:5173",
   methods: ["GET", "POST", "DELETE", "UPDATE", "PUT", "PATCH"],
   optionSuccessStatus: 204,
   preflightContinue: false,
