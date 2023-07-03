@@ -27,11 +27,13 @@ export default function CommentCard({ comment }: { comment: CommentsTypes }) {
   return (
     <div className="flex rounded-sm gap-1">
       <div>
-        <img
-          src={comment.profilePic}
-          alt="profile"
-          className="w-10 h-10 rounded-md object-cover"
-        />
+        <Link to={`/profile/${comment.username}`}>
+          <img
+            src={comment.profilePic}
+            alt="profile"
+            className="w-10 h-10 rounded-md object-cover"
+          />
+        </Link>
       </div>
       <div
         className={` grid gap-2 w-[calc(100%-2rem)] py-1 px-2 ${

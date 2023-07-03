@@ -58,15 +58,25 @@ export default function MobileMenu({
           </p>
         </div>
         <div className="flex gap-4 text-lg">
-          <button className="flex items-center gap-1">
-            {currentUser && currentUser.following.length}
-            <span className="text-sm text-slate-500">Following</span>
-          </button>
-          <button className="flex items-center gap-1">
+          <button
+            className="flex items-center gap-1"
+            onClick={() =>
+              navigate(`/profile/${currentUser?.username}/followers`)
+            }
+          >
             {currentUser?.followers.length}
             <span className="text-sm text-slate-500">
               Follower{currentUser && currentUser.followers.length > 1 && "s"}
             </span>
+          </button>
+          <button
+            className="flex items-center gap-1"
+            onClick={() =>
+              navigate(`/profile/${currentUser?.username}/following`)
+            }
+          >
+            {currentUser && currentUser.following.length}
+            <span className="text-sm text-slate-500">Following</span>
           </button>
         </div>
       </div>
