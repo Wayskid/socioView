@@ -104,8 +104,8 @@ export default function Avatar() {
             accept="image/*"
             onChange={(e) => setNewProfilePic(e.target.files)}
           ></input>
-          <button className="socioViewBtns py-3 mt-3">Next</button>
-          <button type="button" onClick={() => navigate("/")} className="py-3">
+          <button className="socioViewBtns py-3 mt-3">Finish</button>
+          <button type="button" onClick={() => dispatch(setIsReg(false))} className="py-3">
             Skip
           </button>
         </form>
