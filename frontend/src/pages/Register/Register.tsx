@@ -34,7 +34,8 @@ export default function Register() {
       placeholder: "Enter Name",
       required: true,
       errMsg: "Name should be 2 chars minimum. Special chars are not allowed",
-      pattern: "^[a-zA-Z]+ [a-zA-Z]+$",
+      pattern:
+        "^([a-zA-Z0-9]+|[a-zA-Z0-9]+s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+s{1}[a-zA-Z0-9]{3,}s{1}[a-zA-Z0-9]{1,})$",
     },
     {
       Icon: <MdEmail />,
