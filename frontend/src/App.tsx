@@ -30,7 +30,7 @@ function App() {
     (state) => state.app
   );
   return (
-    <div className="app">
+    <div className="app grid">
       <Routes>
         <Route
           path="/"
