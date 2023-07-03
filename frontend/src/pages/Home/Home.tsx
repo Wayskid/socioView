@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MobileMenu from "./Asides/MobileMenu";
 import { useAppSelector } from "../../reduxHooks";
+import Overlay from "../../components/ui/Overlay";
 
 export default function Home() {
   //Mobile menu
@@ -35,12 +36,13 @@ export default function Home() {
       {/*Mobile menu*/}
       <MobileMenu setIsMenuShown={setIsMenuShown} isMenuShown={isMenuShown} />
 
+      <Overlay isMenuShown={isMenuShown} setIsMenuShown={setIsMenuShown} />
+
       {/*Home Main*/}
       <div
         className={`px mx-auto h-full transition-[transform] ${
           isMenuShown && "translate-x-[70%]"
         } grid justify-items-center`}
-        onClick={() => isMenuShown && setIsMenuShown(!isMenuShown)}
       >
         <HomeNavbar setMobileMenu={setIsMenuShown} mobileMenu={isMenuShown} />
         <div className="flex gap-4 mb-2 mt-16 md:mt-20 w-full justify-center px-3">
