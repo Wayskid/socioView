@@ -17,7 +17,7 @@ export default function Following() {
   });
 
   return (
-    <ul className="grid p-3 items-center rounded-lg">
+    <ul className="grid p-3 items-center rounded-lg h-full content-start">
       {followersData ? (
         followersData.map((user) => (
           <FollowCard

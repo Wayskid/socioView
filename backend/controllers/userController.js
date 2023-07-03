@@ -204,7 +204,7 @@ export const changePassword = async (req, res) => {
     //Check current password then update
     const isMatch = await bcrypt.compare(currentPassword, user.password);
 
-    if (isMatch) throw new Error("Password is incorrect");
+    if (!isMatch) throw new Error("Password is incorrect");
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(newPassword, salt);
