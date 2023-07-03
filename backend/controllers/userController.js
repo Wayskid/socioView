@@ -63,11 +63,11 @@ export const Login = async (req, res) => {
       $or: [{ email: emailOrUsername }, { username: emailOrUsername }],
     });
 
-    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
+    if (!user) throw new Error("Invalid credentials");
 
     const isMatch = await bcrypt.compare(password, user.password);
 
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials." });
+    if (!isMatch) throw new Error("Invalid credentials");
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
@@ -87,7 +87,7 @@ export const Login = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json(err.message);
   }
 };
 
@@ -204,17 +204,15 @@ export const changePassword = async (req, res) => {
     //Check current password then update
     const isMatch = await bcrypt.compare(currentPassword, user.password);
 
-    if (isMatch) {
-      const salt = await bcrypt.genSalt();
-      const passwordHash = await bcrypt.hash(newPassword, salt);
+    if (isMatch) throw new Error("Password is incorrect");
 
-      user.password = passwordHash;
-      await user.save();
-      res.status(200).json("Changed successfully");
-    } else {
-      res.status(200).json("Password is incorrect");
-    }
-  } catch (error) {
-    res.status(204).json(error.msg);
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(newPassword, salt);
+
+    user.password = passwordHash;
+    await user.save();
+    res.status(200).json("Changed successfully");
+  } catch (err) {
+    res.status(204).json(err.msg);
   }
 };

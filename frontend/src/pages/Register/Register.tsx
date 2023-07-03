@@ -13,16 +13,14 @@ export default function Register() {
   const navigate = useNavigate();
   const { setCurrentUser } = useContext(AuthContext);
   const dispatch = useAppDispatch();
+
+  //Input state
   const [registerDetails, setRegisterDetails] = useState<RegDetTypes>({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  // const [imgUploadDet, { isLoading: loading }] =
-  //   useUploadToCloudinaryMutation();
-  const [registerUser, { isLoading: Registering, isError }] =
-    useRegisterUserMutation();
 
   // Register Form Array
   const regFormArray = [
@@ -34,8 +32,7 @@ export default function Register() {
       placeholder: "Enter Name",
       required: true,
       errMsg: "Name should be 2 chars minimum. Special chars are not allowed",
-      pattern:
-        "^([a-zA-Z0-9]+|[a-zA-Z0-9]+s{1}[a-zA-Z0-9]{1,}|[a-zA-Z0-9]+s{1}[a-zA-Z0-9]{3,}s{1}[a-zA-Z0-9]{1,})$",
+      pattern: "^[A-Z][a-zA-Z '.-]*[A-Za-z][^-]$",
     },
     {
       Icon: <MdEmail />,
@@ -75,6 +72,13 @@ export default function Register() {
     });
   }
 
+  //Register user
+  const [registerUser, { isLoading: Registering, error: registerError }] =
+    useRegisterUserMutation();
+
+  //Error
+  const [registerErrorMsg, setRegisterErrorMsg] = useState("");
+
   //Handle register user
   function handleRegister(e: FormEvent) {
     e.preventDefault();
@@ -92,7 +96,8 @@ export default function Register() {
           dispatch(setToken(result.token));
           dispatch(setIsReg(true));
           navigate("/chooseUsername");
-        });
+        })
+        .catch((err) => setRegisterErrorMsg(err.data));
     }
   }
 
@@ -124,12 +129,10 @@ export default function Register() {
               }
             />
           ))}
-          <button className="socioViewBtns py-3">Create Account</button>
-          {isError && (
-            <p className="text-sm text-red-600 text-center absolute bottom-1 justify-self-center">
-              Something went wrong
-            </p>
+          {registerError && (
+            <p className="text-red-400 text-sm">{registerErrorMsg}</p>
           )}
+          <button className="socioViewBtns py-3">Create Account</button>
         </form>
       </div>
       <div className="flex gap-2">

@@ -3,7 +3,11 @@ import { MdLock } from "react-icons/md";
 import FormInput from "../../../../components/form/FormInput";
 import { BiX } from "react-icons/bi";
 import { useAppDispatch, useAppSelector } from "../../../../reduxHooks";
-import { setOpenCloseChangePassword } from "../../../../store/features/appSlice";
+import {
+  setAlertMsg,
+  setOpenCloseChangePassword,
+  setShowAlert,
+} from "../../../../store/features/appSlice";
 import { useChangePasswordMutation } from "../../../../services/appApi";
 import AuthContext from "../../../../context/AuthContext";
 import Loader from "../../../../components/ui/Loader";
@@ -62,8 +66,11 @@ export default function ChangePassword() {
   //Handle change password
   const [
     changePassword,
-    { data: changePasswordData, isLoading: changingPassword },
+    { isLoading: changingPassword, error: changePasswordError },
   ] = useChangePasswordMutation();
+
+  //Error
+  const [changePasswordErrorMsg, setChangePasswordErrorMsg] = useState("");
 
   function handleChangePassword(e: FormEvent) {
     e.preventDefault();
@@ -77,17 +84,17 @@ export default function ChangePassword() {
       },
     })
       .unwrap()
-      .then((result) => {
-        if (result === "Changed successfully") {
-          setChangePassDetails({
-            currentPassword: "",
-            updatedPassword: "",
-            confirmUpdatedPassword: "",
-          });
-
-          dispatch(setOpenCloseChangePassword());
-        }
-      });
+      .then(() => {
+        setChangePassDetails({
+          currentPassword: "",
+          updatedPassword: "",
+          confirmUpdatedPassword: "",
+        });
+        dispatch(setOpenCloseChangePassword());
+        dispatch(setAlertMsg("Password Changed"));
+        dispatch(setShowAlert(true));
+      })
+      .catch((err) => setChangePasswordErrorMsg(err.data));
   }
 
   //Access light or dark mode
@@ -123,8 +130,8 @@ export default function ChangePassword() {
               handleChange={handleInputChange}
             />
           ))}
-          {changePasswordData === "Password is incorrect" && (
-            <p className="text-red-400 text-center">Incorrect Password</p>
+          {changePasswordError && (
+            <p className="text-red-400 text-sm">{changePasswordErrorMsg}</p>
           )}
           <button className="socioViewBtns py-3 rounded-md">
             Update Password

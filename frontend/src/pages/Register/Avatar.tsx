@@ -101,9 +101,10 @@ export default function Avatar() {
             type="file"
             name="profilePic"
             id="uploadImg"
+            accept="image/*"
             onChange={(e) => setNewProfilePic(e.target.files)}
           ></input>
-          <button className="socioViewBtns py-3">Next</button>
+          <button className="socioViewBtns py-3 mt-3">Next</button>
           <button type="button" onClick={() => navigate("/")} className="py-3">
             Skip
           </button>

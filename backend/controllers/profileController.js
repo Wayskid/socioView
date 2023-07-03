@@ -22,7 +22,7 @@ export const getProfile = async (req, res) => {
       updatedAt: user.updatedAt,
     });
   } catch (err) {
-    res.status(404).json({ msg: err.message });
+    res.status(404).json(err.message);
   }
 };
 
@@ -47,7 +47,7 @@ export const getFollowers = async (req, res) => {
 
     res.status(200).json(formatted);
   } catch (err) {
-    res.status(404).json({ msg: err.message });
+    res.status(404).json(err.message);
   }
 };
 
@@ -71,7 +71,7 @@ export const getFollowing = async (req, res) => {
     });
     res.status(200).json(formatted);
   } catch (err) {
-    res.status(404).json({ msg: err.message });
+    res.status(404).json(err.message);
   }
 };
 
@@ -85,8 +85,8 @@ export const updateFollow = async (req, res) => {
     if (userId !== followId) {
       if (user.following.includes(followId)) {
         // unfollow the user with followId and update followId followers list
-        user.following = user.following.filter((e) => e !== followId);
-        follow.followers = follow.followers.filter((e) => e !== userId);
+        user.following = user.following.filter((id) => id !== followId);
+        follow.followers = follow.followers.filter((id) => id !== userId);
       } else if (!user.following.includes(followId)) {
         //follow the user with followId and update followId followers list
         user.following.push(followId);
@@ -98,8 +98,8 @@ export const updateFollow = async (req, res) => {
     await follow.save();
 
     res.status(200).json(updatedUserFollow);
-  } catch (error) {
-    res.status(404).json({ msg: error.message });
+  } catch (err) {
+    res.status(404).json(err.message);
   }
 };
 
@@ -159,7 +159,7 @@ export const whoToFollow = async (req, res) => {
       .slice(0, 4); //Show only 4 suggestions
 
     res.status(200).json(whoToFollow);
-  } catch (error) {
-    res.status(204).json(error.msg);
+  } catch (err) {
+    res.status(204).json(err.msg);
   }
 };

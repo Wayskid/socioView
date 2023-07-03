@@ -12,16 +12,21 @@ export default function ChooseUsername() {
   //Get current User info
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   //Save input to state
   const [newUsername, setNewUsername] = useState("");
 
+  //Choose Username
+  const [
+    setUsername,
+    { isLoading: settingUsername, error: chooseUsernameError },
+  ] = useUsernameSettingMutation();
+
+  //Error
+  const [chooseUsernameErrorMsg, setChooseUsernameErrorMsg] = useState("");
+
   //Handle Choose Username
-
-  const [setUsername, { isLoading: settingUsername }] =
-    useUsernameSettingMutation();
-
   function handleSetUsername(e: FormEvent) {
     e.preventDefault();
 
@@ -32,13 +37,10 @@ export default function ChooseUsername() {
     })
       .unwrap()
       .then((result) => {
-        if (result === "Username already taken") {
-          console.log("ALready taken");
-        } else {
-          setCurrentUser(result);
-          navigate("/avatar");
-        }
-      });
+        setCurrentUser(result);
+        navigate("/avatar");
+      })
+      .catch((err) => setChooseUsernameErrorMsg(err.data));
   }
   return (
     <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
@@ -64,6 +66,9 @@ export default function ChooseUsername() {
             handleChange={(e) => setNewUsername(e.target.value)}
             value={newUsername}
           />
+          {chooseUsernameError && (
+            <p className="text-red-400 text-sm">{chooseUsernameErrorMsg}</p>
+          )}
           <button className="socioViewBtns py-3">Next</button>
           <button
             type="button"

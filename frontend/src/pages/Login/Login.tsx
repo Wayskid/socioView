@@ -46,9 +46,14 @@ export default function Login() {
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
   }
 
-  //Handle login
-  const [login, { isError, isLoading: loggingIn }] = useLoginMutation();
+  //login
+  const [login, { isError, isLoading: loggingIn, error: loginError }] =
+    useLoginMutation();
 
+  //Error
+  const [loginErrorMsg, setloginErrorMsg] = useState("");
+
+  //Handle login
   function handleLogin(e: FormEvent) {
     e.preventDefault();
     login(loginDetails)
@@ -57,7 +62,8 @@ export default function Login() {
         setCurrentUser(fulfilled);
         dispatch(setToken(fulfilled.token));
         navigate("/");
-      });
+      })
+      .catch((err) => setloginErrorMsg(err.data));
   }
 
   return (
@@ -83,12 +89,10 @@ export default function Login() {
               value={loginDetails[input.name as keyof typeof loginDetails]}
             />
           ))}
-          <button className="socioViewBtns py-3">Login</button>
-          {isError && (
-            <p className="text-sm text-red-600 text-center absolute bottom-1 justify-self-center">
-              Incorrect email or password
-            </p>
+          {loginError && (
+            <p className="text-red-400 text-sm">{loginErrorMsg}</p>
           )}
+          <button className="socioViewBtns py-3">Login</button>
         </form>
       </div>
       <div className="flex gap-2">
