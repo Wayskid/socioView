@@ -5,7 +5,7 @@ import { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { useLoginMutation } from "../../services/appApi";
 import AuthContext from "../../context/AuthContext";
 import { useAppDispatch } from "../../reduxHooks";
-import { setToken } from "../../store/features/authSlice";
+import { setIsReg, setToken } from "../../store/features/authSlice";
 import FormInput from "../../components/form/FormInput";
 import Loader from "../../components/ui/Loader";
 
@@ -61,6 +61,7 @@ export default function Login() {
       .then((fulfilled) => {
         setCurrentUser(fulfilled);
         dispatch(setToken(fulfilled.token));
+        dispatch(setIsReg(false));
         navigate("/");
       })
       .catch((err) => setloginErrorMsg(err.data));
