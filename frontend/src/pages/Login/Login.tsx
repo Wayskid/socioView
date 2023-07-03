@@ -47,7 +47,7 @@ export default function Login() {
   }
 
   //login
-  const [login, { isError, isLoading: loggingIn, error: loginError }] =
+  const [login, { isLoading: loggingIn, error: loginError }] =
     useLoginMutation();
 
   //Error
