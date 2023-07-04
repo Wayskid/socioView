@@ -23,7 +23,6 @@ import SearchAll from "./pages/Home/HomeRoutes/Search/SearchAll";
 import ChangePassword from "./pages/Home/HomeRoutes/Settings/ChangePassword";
 import ImageModal from "./components/ui/ImageModal";
 import Alerts from "./components/ui/Alerts";
-import Overlay from "./components/ui/Overlay";
 
 function App() {
   const { token, isReg } = useAppSelector((state) => state.auth);
