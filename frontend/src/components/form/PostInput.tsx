@@ -7,6 +7,7 @@ import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import { BiX } from "react-icons/bi";
 import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
+import TextAreaInput from "./TextAreaInput";
 
 export default function PostInput() {
   const { currentUser } = useContext(AuthContext);
@@ -108,14 +109,13 @@ export default function PostInput() {
             className="w-10 h-10 rounded-md object-cover"
           />
         </Link>
-        <input
+        <TextAreaInput
           name="postMsg"
-          placeholder="Write a post"
-          className={` w-[calc(100%-2.5rem)] outline-none py-[0.5rem] px-3 rounded-md focus:placeholder:text-transparent ${
-            darkMode ? "bg-[#292e33]" : "bg-slate-200"
-          }`}
-          onChange={handleInputChange}
+          placeholder="Write your view . . ."
           value={createdPost.postMsg}
+          handleChange={(e) =>
+            setCreatedPost({ ...createdPost, postMsg: e.target.value })
+          }
         />
       </div>
       {previewImage && (

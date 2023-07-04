@@ -10,6 +10,7 @@ import { BiUser, BiWorld, BiEdit } from "react-icons/bi";
 import { RiImageEditLine } from "react-icons/ri";
 import { TbArrowsExchange } from "react-icons/tb";
 import { setAlertMsg, setShowAlert } from "../../../../store/features/appSlice";
+import TextAreaInput from "../../../../components/form/TextAreaInput";
 
 export default function EditProfile() {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -33,13 +34,6 @@ export default function EditProfile() {
       ...profileUpdateVal,
       [e.target.name]:
         e.target.type === "file" ? e.target.files : e.target.value,
-    });
-  }
-
-  function handleTextAreaInput(e: ChangeEvent<HTMLTextAreaElement>) {
-    setProfileUpdateVal({
-      ...profileUpdateVal,
-      bio: e.target.value,
     });
   }
 
@@ -194,19 +188,22 @@ export default function EditProfile() {
           <div className="grid gap-1 w-[min(30rem,100%)] ">
             <p>Bio</p>
             <div
-              className={`flex gap-4  py-2 px-3 rounded-md ${
+              className={`flex gap-1 py-2 px-3 rounded-md ${
                 darkMode ? "bg-[#292e33]" : "bg-slate-300"
               }`}
             >
-              <BiEdit className="text-2xl" />
-              <textarea
-                className="bg-transparent w-full outline-none   placeholder:italic"
-                rows={5}
-                placeholder="Something about you"
+              <BiEdit className="text-2xl mt-2" />
+              <TextAreaInput
                 name="bio"
+                placeholder="Something about you"
                 value={profileUpdateVal.bio}
-                onChange={handleTextAreaInput}
-              ></textarea>
+                handleChange={(e) =>
+                  setProfileUpdateVal({
+                    ...profileUpdateVal,
+                    bio: e.target.value,
+                  })
+                }
+              />
             </div>
           </div>
           <div className="grid gap-1 w-[min(30rem,100%)]">

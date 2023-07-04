@@ -80,7 +80,7 @@ export default function PostCard({ post }: { post: PostsTypes }) {
         </button>
         <PostMenu postMenuShown={postMenuShown} post={post} />
       </div>
-      {post.postMsg && <p className="text-[20px]">{post.postMsg}</p>}
+      {post.postMsg && <p className="text-[20px] whitespace-pre-wrap">{post.postMsg}</p>}
       {post.postImg && (
         <img
           src={post.postImg}

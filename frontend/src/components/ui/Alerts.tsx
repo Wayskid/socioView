@@ -17,7 +17,7 @@ export default function Alerts() {
 
   return (
     <div
-      className={`z-50 absolute mx-auto bg-[#0caa49] w-60 flex justify-self-center text-white justify-between py-2 px-3 text-sm rounded-md transition-[top] ${
+      className={`z-50 absolute bg-[#0caa49] w-60 flex  text-white justify-between py-2 px-3 text-sm rounded-md left-1/2 -translate-x-1/2 transition-[top] ${
         showAlert ? "top-2" : "-top-10"
       }`}
     >

@@ -67,7 +67,7 @@ export default function ProfileSummary({
           <p className="text-slate-500">@{profileOwner.username}</p>
         </div>
         {profileOwner.bio && (
-          <p className="leading-tight text-lg">{profileOwner.bio}</p>
+          <p className=" leading-snug text-lg whitespace-pre-wrap">{profileOwner.bio}</p>
         )}
         {profileOwner.location && (
           <div className="text-sm flex gap-2 items-center">
