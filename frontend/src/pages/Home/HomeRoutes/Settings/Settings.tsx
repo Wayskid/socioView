@@ -24,7 +24,7 @@ export default function Settings() {
   });
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setSettingsVal({ ...settingsVal, [e.target.name]: e.target.value });
+    setSettingsVal({ ...settingsVal, [e.target.name]: e.target.value.trim() });
   }
 
   //Change Username

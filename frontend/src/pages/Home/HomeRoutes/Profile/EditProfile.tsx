@@ -33,7 +33,7 @@ export default function EditProfile() {
     setProfileUpdateVal({
       ...profileUpdateVal,
       [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value,
+        e.target.type === "file" ? e.target.files : e.target.value.trim(),
     });
   }
 
@@ -200,7 +200,7 @@ export default function EditProfile() {
                 handleChange={(e) =>
                   setProfileUpdateVal({
                     ...profileUpdateVal,
-                    bio: e.target.value,
+                    bio: e.target.value.trim(),
                   })
                 }
               />

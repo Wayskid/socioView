@@ -68,7 +68,7 @@ export default function Register() {
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     setRegisterDetails({
       ...registerDetails,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value.trim(),
     });
   }
 

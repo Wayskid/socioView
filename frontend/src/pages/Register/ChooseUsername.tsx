@@ -63,7 +63,7 @@ export default function ChooseUsername() {
             name="setUsername"
             type="text"
             placeholder="Choose username"
-            handleChange={(e) => setNewUsername(e.target.value)}
+            handleChange={(e) => setNewUsername(e.target.value.trim())}
             value={newUsername}
           />
           {chooseUsernameError && (

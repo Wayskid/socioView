@@ -43,7 +43,7 @@ export default function Login() {
   });
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
+    setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value.trim() });
   }
 
   //login
