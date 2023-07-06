@@ -32,7 +32,7 @@ export default function TextAreaInput({
   }, [value, textAreaRef]);
 
   return (
-    <div className="w-[calc(100%-2.5rem)]">
+    <div className="w-[calc(100%-2.5rem)] grid">
       <textarea
         name={name}
         ref={textAreaRef}

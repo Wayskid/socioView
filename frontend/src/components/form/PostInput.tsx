@@ -1,29 +1,30 @@
 import { LuImagePlus } from "react-icons/lu";
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useAppSelector } from "../../reduxHooks";
 import { useCreatePostMutation } from "../../services/appApi";
 import AuthContext from "../../context/AuthContext";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import { BiX } from "react-icons/bi";
-import Loader from "../ui/Loader";
 import { Link } from "react-router-dom";
 import TextAreaInput from "./TextAreaInput";
+import AppButton from "../ui/AppButton";
 
 export default function PostInput() {
+  //Access current user info
   const { currentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
-  const [createdPost, setCreatedPost] = useState({
-    userId: currentUser._id,
+
+  //Save input to state
+  const [createdPost, setCreatedPost] = useState<{
+    postMsg: string;
+    postImg: FileList | null;
+  }>({
     postMsg: "",
     postImg: null,
   });
-  const [newPost, { isLoading: creatingPost }] = useCreatePostMutation();
-  const [imgUploadDet, { isLoading: uploadingImg }] =
-    useUploadToCloudinaryMutation();
 
   //Handle image preview
   const [previewImage, setPreviewImage] = useState("");
-
   useEffect(() => {
     if (createdPost.postImg) {
       const imgFile = createdPost.postImg![0];
@@ -33,14 +34,12 @@ export default function PostInput() {
     }
   }, [createdPost.postImg]);
 
-  //Save input to state
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setCreatedPost({
-      ...createdPost,
-      [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value,
-    });
-  }
+  //Upload image to cloudinary
+  const [imgUploadDet, { isLoading: uploadingImg }] =
+    useUploadToCloudinaryMutation();
+
+  //Create post
+  const [newPost, { isLoading: creatingPost }] = useCreatePostMutation();
 
   // Handle create post
   function handleCreatePost(e: FormEvent) {
@@ -50,12 +49,15 @@ export default function PostInput() {
     if (createdPost.postMsg && !createdPost.postImg) {
       newPost({
         token,
-        newPost: { ...createdPost, postImg: "" },
+        newPost: {
+          userId: currentUser._id,
+          postMsg: createdPost.postMsg,
+          postImg: "",
+        },
       })
         .unwrap()
         .then(() => {
           setCreatedPost({
-            userId: currentUser._id,
             postMsg: "",
             postImg: null,
           });
@@ -76,12 +78,15 @@ export default function PostInput() {
         .then((result) => {
           newPost({
             token,
-            newPost: { ...createdPost, postImg: result.secure_url },
+            newPost: {
+              userId: currentUser._id,
+              postMsg: createdPost.postMsg,
+              postImg: result.secure_url,
+            },
           })
             .unwrap()
             .then(() => {
               setCreatedPost({
-                userId: currentUser._id,
                 postMsg: "",
                 postImg: null,
               });
@@ -96,7 +101,7 @@ export default function PostInput() {
 
   return (
     <form
-      className={`gap-2 grid p-3 border-b-4  ${
+      className={`postInput gap-2 grid p-3 border-b-4  ${
         darkMode ? "bg-[#1d2226] border-black" : "bg-white border-slate-300"
       }`}
       onSubmit={handleCreatePost}
@@ -131,7 +136,10 @@ export default function PostInput() {
           />
           <button
             className="absolute top-1 right-1 text-4xl text-[#0caa49] bg-slate-100 rounded-full"
-            onClick={() => setPreviewImage("")}
+            onClick={() => {
+              setPreviewImage("");
+              setCreatedPost({ ...createdPost, postImg: null });
+            }}
             type="button"
           >
             <BiX />
@@ -142,7 +150,9 @@ export default function PostInput() {
         <button className="flex items-end gap-1" type="button">
           <input
             type="file"
-            onChange={handleInputChange}
+            onChange={(e) =>
+              setCreatedPost({ ...createdPost, postImg: e.target.files })
+            }
             id="postImg"
             name="postImg"
             className="hidden"
@@ -154,13 +164,15 @@ export default function PostInput() {
             <LuImagePlus className="text-[#0caa49] text-2xl grid" />
           </label>
         </button>
-        <button className="socioViewBtns text-sm py-1 px-6 rounded-md transition-[padding]">
-          {uploadingImg || creatingPost ? (
-            <Loader bgColor="bg-slate-900" />
-          ) : (
-            "Post"
-          )}
-        </button>
+        <AppButton
+          label="Post"
+          width="w-24"
+          height="8"
+          isLoading={uploadingImg || creatingPost}
+          isDisabled={
+            createdPost.postMsg.length > 0 || createdPost.postImg ? false : true
+          }
+        />
       </div>
     </form>
   );

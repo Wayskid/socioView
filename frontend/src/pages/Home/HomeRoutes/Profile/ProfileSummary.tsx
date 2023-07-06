@@ -1,5 +1,5 @@
 import { BiWorld } from "react-icons/bi";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useUpdateFollowMutation } from "../../../../services/appApi";
 import { useContext } from "react";
 import AuthContext from "../../../../context/AuthContext";
@@ -8,6 +8,7 @@ import {
   setImageToShow,
   setShowImage,
 } from "../../../../store/features/appSlice";
+import AppButton from "../../../../components/ui/AppButton";
 
 export default function ProfileSummary({
   profileOwner,
@@ -15,6 +16,7 @@ export default function ProfileSummary({
   profileOwner: UserInfoType;
 }) {
   const { username } = useParams();
+  const navigate = useNavigate();
 
   //Get current user info
   const { currentUser, setCurrentUser } = useContext(AuthContext);
@@ -42,9 +44,11 @@ export default function ProfileSummary({
           <div className="flex justify-between items-center">
             <p className="text-2xl">{profileOwner.name}</p>
             {(profileOwner.username && username) === currentUser.username ? (
-              <Link to={`/settings/profile`} className="text-[#0caa49]">
-                Edit Proflie
-              </Link>
+              <AppButton
+                label="Edit profile"
+                regular={true}
+                handleClick={() => navigate("/settings/profile")}
+              />
             ) : (
               <button
                 className={`text-[#0caa49]`}
@@ -67,7 +71,9 @@ export default function ProfileSummary({
           <p className="text-slate-500">@{profileOwner.username}</p>
         </div>
         {profileOwner.bio && (
-          <p className=" leading-snug text-lg whitespace-pre-wrap">{profileOwner.bio}</p>
+          <p className=" leading-snug text-lg whitespace-pre-wrap">
+            {profileOwner.bio}
+          </p>
         )}
         {profileOwner.location && (
           <div className="text-sm flex gap-2 items-center">

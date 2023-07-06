@@ -4,6 +4,7 @@ import AuthContext from "../context/AuthContext";
 import { useUpdateFollowMutation } from "../services/appApi";
 import { useAppSelector } from "../reduxHooks";
 import { RiUserFollowLine } from "react-icons/ri";
+import AppButton from "./ui/AppButton";
 
 export default function FollowCard({
   user,
@@ -15,7 +16,8 @@ export default function FollowCard({
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
-  const [updateFollow] = useUpdateFollowMutation();
+  const [updateFollow, { isLoading: updatingFollow }] =
+    useUpdateFollowMutation();
 
   //Access light or dark mode
   const darkMode = useAppSelector((state) => state.app.darkMode);
@@ -23,7 +25,7 @@ export default function FollowCard({
   return (
     <li
       key={user._id.toString()}
-      className={`flex gap-3 cursor-pointer border-b-4  p-3 ${
+      className={`flex gap-3 cursor-pointer border-b-4  p-3 [&>:last-child:not(div)]:ml-auto ${
         darkMode ? "bg-[#1d2226] border-black" : "bg-white border-slate-300"
       }`}
     >
@@ -43,7 +45,7 @@ export default function FollowCard({
           </p>
           <div className="flex gap-2 text-slate-500 text-[12px]">
             <p className="leading-[0.8] ">
-              @{user.username.slice(0,15)}
+              @{user.username.slice(0, 15)}
               {user.username.length > 15 && "..."}
             </p>
           </div>
@@ -54,9 +56,15 @@ export default function FollowCard({
           <RiUserFollowLine className="self-center" />
         )}
       {currentUser._id !== user._id && (
-        <button
-          className="ml-auto text-sm text-[#0caa49] h-fit my-auto"
-          onClick={() =>
+        <AppButton
+          regular={true}
+          label={
+            currentUser.following.some((userId) => userId == user._id)
+              ? "Unfollow"
+              : "Follow"
+          }
+          isLoading={updatingFollow}
+          handleClick={() =>
             updateFollow({
               userId: currentUser._id,
               followId: user._id,
@@ -65,11 +73,7 @@ export default function FollowCard({
               .unwrap()
               .then((result) => setCurrentUser(result))
           }
-        >
-          {currentUser.following.some((userId) => userId == user._id)
-            ? "Unfollow"
-            : "Follow"}
-        </button>
+        />
       )}
     </li>
   );

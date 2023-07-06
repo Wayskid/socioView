@@ -11,6 +11,7 @@ import {
 import { useChangePasswordMutation } from "../../../../services/appApi";
 import AuthContext from "../../../../context/AuthContext";
 import Loader from "../../../../components/ui/Loader";
+import AppButton from "../../../../components/ui/AppButton";
 
 export default function ChangePassword() {
   const dispatch = useAppDispatch();
@@ -133,9 +134,18 @@ export default function ChangePassword() {
           {changePasswordError && (
             <p className="text-red-400 text-sm">{changePasswordErrorMsg}</p>
           )}
-          <button className="socioViewBtns py-3 rounded-md">
-            Update Password
-          </button>
+          <AppButton
+            label="Update Password"
+            height="10"
+            isLoading={changingPassword}
+            isDisabled={
+              changePassDetails.currentPassword &&
+              changePassDetails.updatedPassword &&
+              changePassDetails.confirmUpdatedPassword
+                ? false
+                : true
+            }
+          />
         </form>
       </div>
       {changingPassword && (

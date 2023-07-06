@@ -38,8 +38,8 @@ export default function PostMenu({
   return (
     <motion.div
       variants={{
-        initial: { opacity: 0, visibility: "hidden" },
-        end: { opacity: 1, visibility: "visible" },
+        initial: { opacity: 0, visibility: "hidden", translateY: "-20px" },
+        end: { opacity: 1, visibility: "visible", translateY: 0 },
       }}
       animate={!postMenuShown ? "initial" : "end"}
       className={`navProfileMenu absolute w-40 right-0  rounded-md overflow-hidden border-slate-700 border top-[2rem] grid text-sm ${

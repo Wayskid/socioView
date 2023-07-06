@@ -2,9 +2,11 @@ import { useSearchVal } from "./Search";
 import FollowCard from "../../../../components/FollowCard";
 import Loader from "../../../../components/ui/Loader";
 import PostCard from "../../../../components/PostCard";
-import { Link } from "react-router-dom";
+import AppButton from "../../../../components/ui/AppButton";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchAll() {
+  //Outlet context
   const {
     searchedUserData,
     searchingUsers,
@@ -12,6 +14,8 @@ export default function SearchAll() {
     searchingPosts,
     searchVal,
   } = useSearchVal();
+
+  const navigate = useNavigate();
 
   return (
     <div className="grid p-3 gap-6">
@@ -32,9 +36,11 @@ export default function SearchAll() {
                 ))}
               </div>
               {searchedUserData?.length > 4 && (
-                <Link to="people" className="text-[#0caa49]">
-                  Show more
-                </Link>
+                <AppButton
+                  label="Show more"
+                  regular={true}
+                  handleClick={() => navigate("/Search/people")}
+                />
               )}
             </div>
           )}
@@ -49,9 +55,11 @@ export default function SearchAll() {
                 ))}
               </div>
               {searchedPostsData?.length > 4 && (
-                <Link to="posts" className="text-[#0caa49]">
-                  Show more
-                </Link>
+                <AppButton
+                  label="Show more"
+                  regular={true}
+                  handleClick={() => navigate("/Search/posts")}
+                />
               )}
             </div>
           )}

@@ -1,12 +1,18 @@
 import "../../styles/loader.scss";
 
-export default function Loader({ bgColor }: { bgColor?: String }) {
+export default function Loader() {
   return (
-    <div className="border-none justify-self-center">
-      <div className="pl1">
-        <div className={`pl1__a ${bgColor}`}></div>
-        <div className={`pl1__b ${bgColor}`}></div>
-        <div className={`pl1__c ${bgColor}`}></div>
+    <div className="loader border-none justify-self-center mt-1">
+      <div className="loaderWrapper flex justify-center justify-self-center gap-2">
+        <div
+          className={`firstSquare animate-[bounce1_1s_infinite] w-2 h-2 origin-center bg-[#0caa41]`}
+        ></div>
+        <div
+          className={`secondSquare animate-[bounce1_1s_infinite] w-2 h-2 origin-center bg-[#0caa41]`}
+        ></div>
+        <div
+          className={`thirdSquare animate-[bounce1_1s_infinite] w-2 h-2 origin-center bg-[#0caa41]`}
+        ></div>
       </div>
     </div>
   );

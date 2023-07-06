@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
 import { useEditProfileMutation } from "../../services/appApi";
 import { setIsReg } from "../../store/features/authSlice";
+import AppButton from "../../components/ui/AppButton";
 
 export default function Avatar() {
   //Get current User info
@@ -104,10 +105,17 @@ export default function Avatar() {
             accept="image/*"
             onChange={(e) => setNewProfilePic(e.target.files)}
           ></input>
-          <button className="socioViewBtns py-3 mt-3">Finish</button>
-          <button type="button" onClick={() => dispatch(setIsReg(false))} className="py-3">
-            Skip
-          </button>
+          <AppButton
+            label="Finish"
+            height="10"
+            isLoading={settingProfilePic}
+            isDisabled={newProfilePic ? false : true}
+          />
+          <AppButton
+            label="Skip"
+            regular={true}
+            handleClick={() => dispatch(setIsReg(false))}
+          />
         </form>
       </div>
       {settingProfilePic && (

@@ -1,29 +1,8 @@
-.pl1 {
-  justify-content: space-around;
-  justify-self: center;
-  display: flex;
-  gap: 0.5rem;
-  height: 1rem;
-  margin-top: 1rem;
-
-  &__a,
-  &__b,
-  &__c {
-    width: 0.5em;
-    height: 0.5em;
-    transform-origin: 50% 100%;
-    animation: bounce1 1s linear infinite;
-  }
-
-  &__a {
-    background: #0caa49;
-  }
-  &__b {
-    background: #0caa49;
+.loader {
+  .secondSquare {
     animation-delay: 0.1s;
   }
-  &__c {
-    background: #0caa49;
+  .thirdSquare {
     animation-delay: 0.2s;
   }
 }
@@ -32,19 +11,19 @@
 @keyframes bounce1 {
   from,
   to {
-    transform: translateY(0) scale(1, 1);
+    translate: 0;
     animation-timing-function: ease-in;
   }
   45% {
-    transform: translateY(1em) scale(1, 1);
+    translate: 0 0.5em;
     animation-timing-function: linear;
   }
   50% {
-    transform: translateY(1em) scale(1.5, 0.5);
+    translate: 0 0.5em;
     animation-timing-function: linear;
   }
   55% {
-    transform: translateY(1em) scale(1, 1);
+    translate: 0 0.5em;
     animation-timing-function: ease-out;
   }
 }

@@ -54,7 +54,7 @@ export default function HomeNavbar({
               alt="profile"
               className="w-10 h-10 rounded-md object-cover"
             />
-            <IoIosArrowDropdownCircle className="absolute -bottom-1 -right-1 text-slate-300" />
+            <IoIosArrowDropdownCircle className="absolute -bottom-1 -right-1 text-[#0caa49]" />
           </button>
 
           <NavProfileMenu

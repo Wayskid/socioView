@@ -7,6 +7,7 @@ import AuthContext from "../../context/AuthContext";
 import { useAppSelector } from "../../reduxHooks";
 import { BsPerson } from "react-icons/bs";
 import Loader from "../../components/ui/Loader";
+import AppButton from "../../components/ui/AppButton";
 
 export default function ChooseUsername() {
   //Get current User info
@@ -69,14 +70,17 @@ export default function ChooseUsername() {
           {chooseUsernameError && (
             <p className="text-red-400 text-sm">{chooseUsernameErrorMsg}</p>
           )}
-          <button className="socioViewBtns py-3">Next</button>
-          <button
-            type="button"
-            onClick={() => navigate("/avatar")}
-            className="py-3"
-          >
-            Skip
-          </button>
+          <AppButton
+            label="Next"
+            height="10"
+            isLoading={settingUsername}
+            isDisabled={newUsername ? false : true}
+          />
+          <AppButton
+            label="Skip"
+            regular={true}
+            handleClick={() => navigate("/avatar")}
+          />
         </form>
       </div>
       {settingUsername && (

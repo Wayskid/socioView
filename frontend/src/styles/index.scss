@@ -10,6 +10,8 @@
   display: none;
 }
 
+:last-child:has(button){}
+
 /* Change Autocomplete styles in Chrome*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -46,16 +48,6 @@ body {
 .app {
   display: grid;
   height: 100%;
-}
-
-.socioViewBtns {
-  background-color: #0caa41;
-  color: white;
-
-  &:hover {
-    background-color: #03d048;
-    transition: 0.5s ease;
-  }
 }
 
 .noBKGBtn {

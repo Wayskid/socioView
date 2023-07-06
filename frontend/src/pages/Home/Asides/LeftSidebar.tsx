@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import AuthContext from "../../../context/AuthContext";
 import { useContext } from "react";
 import { useAppSelector } from "../../../reduxHooks";
+import AppButton from "../../../components/ui/AppButton";
 
 export default function LeftSidebar() {
   const location = useLocation();
@@ -86,9 +87,9 @@ export default function LeftSidebar() {
           </Link>
         </div>
       </div>
-      <button className="socioViewBtns py-4 sticky top-20 rounded-b-md">
-        Say something
-      </button>
+      <div className="sticky top-20">
+        <AppButton label="Say something" width="w-full" height="14" />
+      </div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import {
   useLikePostMutation,
 } from "../services/appApi";
 import { useAppDispatch, useAppSelector } from "../reduxHooks";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import PostMenu from "./PostMenu";
 import Comments from "./Comments";
@@ -36,6 +36,22 @@ export default function PostCard({ post }: { post: PostsTypes }) {
 
   //Access light or dark mode
   const darkMode = useAppSelector((state) => state.app.darkMode);
+
+  //Close post menu
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (menuRef.current !== e.target) {
+        setPostMenuShown(false);
+      }
+    }
+    document.addEventListener("click", handler);
+
+    return () => {
+      document.removeEventListener("click", handler);
+    };
+  });
 
   return (
     <div
@@ -71,8 +87,9 @@ export default function PostCard({ post }: { post: PostsTypes }) {
           </div>
         </Link>
         <button
-          className="flex gap-1 ml-auto self-center p-1 pr-0 group"
+          className="flex gap-1 ml-auto self-center h-8 w-8 items-center justify-center group hover:bg-[#ffffff18] rounded-full transition-[background]"
           onClick={() => setPostMenuShown(!postMenuShown)}
+          ref={menuRef}
         >
           <div className="w-[0.2rem] h-[0.2rem] bg-[#0caa49] group-hover:bg-[#03d048]"></div>
           <div className="w-[0.2rem] h-[0.2rem] bg-[#0caa49] group-hover:bg-[#03d048]"></div>
@@ -80,7 +97,9 @@ export default function PostCard({ post }: { post: PostsTypes }) {
         </button>
         <PostMenu postMenuShown={postMenuShown} post={post} />
       </div>
-      {post.postMsg && <p className="text-[20px] whitespace-pre-wrap">{post.postMsg}</p>}
+      {post.postMsg && (
+        <p className="text-[20px] whitespace-pre-wrap">{post.postMsg}</p>
+      )}
       {post.postImg && (
         <img
           src={post.postImg}

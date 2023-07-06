@@ -1,28 +1,30 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 import { BiX } from "react-icons/bi";
 import { LuImagePlus } from "react-icons/lu";
-import Loader from "../ui/Loader";
 import { useAppSelector } from "../../reduxHooks";
 import { useCreateCommentMutation } from "../../services/appApi";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
+import TextAreaInput from "./TextAreaInput";
+import AppButton from "../ui/AppButton";
 
 export default function CommentInput({ post }: { post: PostsTypes }) {
+  //Access current user info
   const { currentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
-  const [createdComment, setCreatedComment] = useState({
-    postId: post._id,
-    userId: currentUser._id,
+
+  //Save input to state
+  const [createdComment, setCreatedComment] = useState<{
+    commentMsg: string;
+    commentImg: FileList | null;
+  }>({
     commentMsg: "",
     commentImg: null,
   });
-  const [commentImageFile, setCommentImageFile] = useState("");
-  const [newComment, { isLoading: creatingComment }] =
-    useCreateCommentMutation();
-  const [imgUploadDet, { isLoading: uploadingImg }] =
-    useUploadToCloudinaryMutation();
 
   //Handle image preview
+  const [commentImageFile, setCommentImageFile] = useState("");
+
   useEffect(() => {
     if (createdComment.commentImg) {
       const imgFile = createdComment.commentImg![0];
@@ -32,14 +34,13 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
     }
   }, [createdComment.commentImg]);
 
-  //Save input to state
-  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setCreatedComment({
-      ...createdComment,
-      [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value,
-    });
-  }
+  //Save image to cloudinary
+  const [imgUploadDet, { isLoading: uploadingImg }] =
+    useUploadToCloudinaryMutation();
+
+  //Create comment
+  const [newComment, { isLoading: creatingComment }] =
+    useCreateCommentMutation();
 
   // Handle create post
   function handleCreateComment(e: FormEvent) {
@@ -49,13 +50,16 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
     if (createdComment.commentMsg && !createdComment.commentImg) {
       newComment({
         token,
-        newComment: { ...createdComment, commentImg: "" },
+        newComment: {
+          postId: post._id,
+          userId: currentUser._id,
+          commentMsg: createdComment.commentMsg,
+          commentImg: "",
+        },
       })
         .unwrap()
         .then(() => {
           setCreatedComment({
-            postId: post._id,
-            userId: currentUser._id,
             commentMsg: "",
             commentImg: null,
           });
@@ -76,13 +80,16 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
         .then((result) => {
           newComment({
             token,
-            newComment: { ...createdComment, commentImg: result.secure_url },
+            newComment: {
+              postId: post._id,
+              userId: currentUser._id,
+              commentMsg: createdComment.commentMsg,
+              commentImg: result.secure_url,
+            },
           })
             .unwrap()
             .then(() => {
               setCreatedComment({
-                postId: post._id,
-                userId: currentUser._id,
                 commentMsg: "",
                 commentImg: null,
               });
@@ -108,14 +115,13 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
           alt="profile"
           className="w-10 h-10 rounded-sm object-cover"
         />
-        <input
+        <TextAreaInput
           name="commentMsg"
           placeholder="Write a comment"
-          className={` w-[calc(100%-2.5rem)] outline-none px-3 rounded-md focus:placeholder:text-transparent text-sm ${
-            darkMode ? "bg-[#373d43]" : "bg-slate-300"
-          }`}
-          onChange={handleInputChange}
           value={createdComment.commentMsg}
+          handleChange={(e) =>
+            setCreatedComment({ ...createdComment, commentMsg: e.target.value })
+          }
         />
       </div>
       {commentImageFile && (
@@ -137,7 +143,12 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
         <button className="flex items-end gap-1" type="button">
           <input
             type="file"
-            onChange={handleInputChange}
+            onChange={(e) =>
+              setCreatedComment({
+                ...createdComment,
+                commentImg: e.target.files,
+              })
+            }
             id="commentImg"
             name="commentImg"
             className="hidden"
@@ -149,13 +160,17 @@ export default function CommentInput({ post }: { post: PostsTypes }) {
             <LuImagePlus className="text-[#0caa49] text-xl grid" />
           </label>
         </button>
-        <button className="socioViewBtns text-sm py-1 px-3 rounded-md transition-[padding]">
-          {uploadingImg || creatingComment ? (
-            <Loader bgColor="bg-slate-900" />
-          ) : (
-            "Comment"
-          )}
-        </button>
+        <AppButton
+          label="Comment"
+          width="w-24"
+          height="8"
+          isLoading={uploadingImg || creatingComment}
+          isDisabled={
+            createdComment.commentMsg.length > 0 || createdComment.commentImg
+              ? false
+              : true
+          }
+        />
       </div>
     </form>
   );

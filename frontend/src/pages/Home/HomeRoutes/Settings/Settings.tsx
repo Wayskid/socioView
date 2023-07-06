@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
 import AuthContext from "../../../../context/AuthContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   useUsernameSettingMutation,
   useEmailSettingMutation,
@@ -11,8 +11,11 @@ import FormInput from "../../../../components/form/FormInput";
 import { BiUserCircle } from "react-icons/bi";
 import { MdEmail } from "react-icons/md";
 import { setOpenCloseChangePassword } from "../../../../store/features/appSlice";
+import AppButton from "../../../../components/ui/AppButton";
 
 export default function Settings() {
+  const navigate = useNavigate();
+
   //Get current User info
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
@@ -51,7 +54,8 @@ export default function Settings() {
   }
 
   //Change Email
-  const [changeEmail, { isLoading: changingEmail, error: changeEmailError }] = useEmailSettingMutation();
+  const [changeEmail, { isLoading: changingEmail, error: changeEmailError }] =
+    useEmailSettingMutation();
 
   //Error
   const [changeEmailErrorMsg, setChangeEmailErrorMsg] = useState("");
@@ -84,9 +88,11 @@ export default function Settings() {
       <div className="profile grid content-start p-3 gap-5">
         <div className="flex justify-between items-center">
           <p className="text-2xl font-medium">Settings</p>
-          <Link to={`/`} className="text-[2xl] text-[#0caa49]">
-            DONE
-          </Link>
+          <AppButton
+            label="Done"
+            regular={true}
+            handleClick={() => navigate("/")}
+          />
         </div>
         <div className="grid gap-3">
           <div className="grid gap-1">
@@ -107,7 +113,11 @@ export default function Settings() {
                 required={true}
               />
               {settingsVal.newUsername !== currentUser.username && (
-                <button className="text-[2xl] text-[#0caa49]">SAVE</button>
+                <AppButton
+                  regular={true}
+                  label="Save"
+                  isLoading={changingUsername}
+                />
               )}
             </form>
             {changeUsernameError && (
@@ -131,26 +141,28 @@ export default function Settings() {
                 required={true}
               />
               {settingsVal.newEmail !== currentUser.email && (
-                <button className="text-[2xl] text-[#0caa49]">SAVE</button>
+                <AppButton
+                  regular={true}
+                  label="Save"
+                  isLoading={changingEmail}
+                />
               )}
             </form>
             {changeEmailError && (
               <p className="text-red-400 text-sm">{changeEmailErrorMsg}</p>
             )}
           </div>
-          <div className="grid gap-2 justify-self-end">
-            <button
-              className="text-sm text-[#0caa49] text-right"
-              onClick={() => dispatch(setOpenCloseChangePassword())}
-            >
-              CHANGE PASSWORD
-            </button>
-            <Link
-              to={`/settings/profile`}
-              className="text-sm text-[#0caa49] text-right"
-            >
-              EDIT PROFILE
-            </Link>
+          <div className="grid gap-2 justify-self-end [&>:last-child]:text-right">
+            <AppButton
+              label="Change password"
+              regular={true}
+              handleClick={() => dispatch(setOpenCloseChangePassword())}
+            />
+            <AppButton
+              label="Edit profile"
+              regular={true}
+              handleClick={() => navigate("/settings/profile")}
+            />
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../reduxHooks";
 import { setIsReg, setToken } from "../../store/features/authSlice";
 import FormInput from "../../components/form/FormInput";
 import Loader from "../../components/ui/Loader";
+import AppButton from "../../components/ui/AppButton";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -68,12 +69,12 @@ export default function Login() {
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-12 w-[min(24rem,90%)] justify-self-center">
+    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(28rem,90%)] justify-self-center py-8 relative">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
       </Link>
-      <div className="loginForm bg-slate-800 rounded-lg py-10 px-5 grid gap-10 w-full relative">
+      <div className="bg-slate-800 rounded-lg p-7 grid gap-10 w-full relative">
         <div className="grid gap-2 text-center">
           <p className="text-xl ">Welcome Back</p>
           <p className="text-xs font-thin">
@@ -93,14 +94,25 @@ export default function Login() {
           {loginError && (
             <p className="text-red-400 text-sm">{loginErrorMsg}</p>
           )}
-          <button className="socioViewBtns py-3">Login</button>
+          <AppButton
+            label="Login"
+            height="10"
+            isLoading={loggingIn}
+            isDisabled={
+              loginDetails.emailOrUsername && loginDetails.password
+                ? false
+                : true
+            }
+          />
         </form>
       </div>
       <div className="flex gap-2">
         <p>Don't have an account?</p>
-        <Link to="/register" className="text-[#0caa49]">
-          Create an account
-        </Link>
+        <AppButton
+          label="Create an account"
+          regular={true}
+          handleClick={() => navigate("/register")}
+        />
       </div>
       {loggingIn && (
         <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">

@@ -1,8 +1,8 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useEditProfileMutation } from "../../../../services/appApi";
 import { useUploadToCloudinaryMutation } from "../../../../services/cloudinaryApi";
 import AuthContext from "../../../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../reduxHooks";
 import Loader from "../../../../components/ui/Loader";
 import FormInput from "../../../../components/form/FormInput";
@@ -11,40 +11,45 @@ import { RiImageEditLine } from "react-icons/ri";
 import { TbArrowsExchange } from "react-icons/tb";
 import { setAlertMsg, setShowAlert } from "../../../../store/features/appSlice";
 import TextAreaInput from "../../../../components/form/TextAreaInput";
+import AppButton from "../../../../components/ui/AppButton";
 
 export default function EditProfile() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  //Access current user info
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const token = useAppSelector((state) => state.auth.token);
-  const [profileUpdateVal, setProfileUpdateVal] = useState({
+
+  //Save edit profile inputs to state
+  const [profileUpdateVal, setProfileUpdateVal] = useState<{
+    name: string;
+    bio: string;
+    location: string;
+    profilePic: FileList | null;
+  }>({
     name: currentUser.name,
     bio: currentUser.bio,
     location: currentUser.location,
     profilePic: null,
   });
-  const [imgUploadDet, { isLoading: uploadingImg }] =
-    useUploadToCloudinaryMutation();
-  const [profileUpdate, { isLoading: updatingProfile }] =
-    useEditProfileMutation();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-
-  //Save edit profile inputs to state
-  function handleInput(e: ChangeEvent<HTMLInputElement>) {
-    setProfileUpdateVal({
-      ...profileUpdateVal,
-      [e.target.name]:
-        e.target.type === "file" ? e.target.files : e.target.value.trim(),
-    });
-  }
 
   //Upload to cloudinary
+  const [imgUploadDet, { isLoading: uploadingImg }] =
+    useUploadToCloudinaryMutation();
+
+  //Update profile
+  const [profileUpdate, { isLoading: updatingProfile }] =
+    useEditProfileMutation();
+
+  //Handle upload to cloudinary
   async function handleUpdateProfile() {
     if (profileUpdateVal.profilePic) {
       const imgFile = profileUpdateVal.profilePic![0];
       const imgData = new FormData();
       imgData.append("file", imgFile);
       imgData.append("upload_preset", "SocioView");
-      imgData.append("cloud_name", "diiohnshc");
+      imgData.append("cloud_name", import.meta.env.VITE_CLOUD_NAME);
 
       // Handle update profile with image
       imgUploadDet(imgData)
@@ -95,7 +100,6 @@ export default function EditProfile() {
 
   //Handle image preview
   const [previewImage, setPreviewImage] = useState("");
-
   useEffect(() => {
     if (profileUpdateVal.profilePic) {
       const imgFile = profileUpdateVal.profilePic![0];
@@ -121,19 +125,17 @@ export default function EditProfile() {
           profileUpdateVal.name === currentUser.name &&
           profileUpdateVal.bio === currentUser.bio &&
           profileUpdateVal.location === currentUser.location ? (
-            <Link
-              to={`/profile/${currentUser.username}`}
-              className="text-[2xl] text-[#0caa49]"
-            >
-              CANCEL
-            </Link>
+            <AppButton
+              label="Cancel"
+              regular={true}
+              handleClick={() => navigate(`/profile/${currentUser.username}`)}
+            />
           ) : (
-            <button
-              className="text-[2xl] text-[#0caa49]"
-              onClick={handleUpdateProfile}
-            >
-              SAVE
-            </button>
+            <AppButton
+              label="Save"
+              regular={true}
+              handleClick={handleUpdateProfile}
+            />
           )}
         </div>
         <div className="grid gap-8 rounded-lg">
@@ -147,7 +149,7 @@ export default function EditProfile() {
                   className="w-40 rounded-md h-40 object-cover"
                 />
                 <label
-                  className="text-3xl text-slate-800 absolute justify-self-center w-full h-full bg-[#1212126a] grid content-center justify-center cursor-pointer"
+                  className="text-3xl text-slate-300 absolute justify-self-center w-full h-full bg-[#12121291] grid content-center justify-center cursor-pointer"
                   htmlFor="uploadImg"
                 >
                   <RiImageEditLine />
@@ -157,7 +159,13 @@ export default function EditProfile() {
                   type="file"
                   name="profilePic"
                   id="uploadImg"
-                  onChange={handleInput}
+                  accept="image/*"
+                  onChange={(e) =>
+                    setProfileUpdateVal({
+                      ...profileUpdateVal,
+                      profilePic: e.target.files,
+                    })
+                  }
                 ></input>
               </div>
               {previewImage && (
@@ -182,7 +190,12 @@ export default function EditProfile() {
               type="text"
               placeholder="name"
               value={profileUpdateVal.name}
-              handleChange={handleInput}
+              handleChange={(e) =>
+                setProfileUpdateVal({
+                  ...profileUpdateVal,
+                  name: e.target.value,
+                })
+              }
             />
           </div>
           <div className="grid gap-1 w-[min(30rem,100%)] ">
@@ -200,7 +213,7 @@ export default function EditProfile() {
                 handleChange={(e) =>
                   setProfileUpdateVal({
                     ...profileUpdateVal,
-                    bio: e.target.value.trim(),
+                    bio: e.target.value,
                   })
                 }
               />
@@ -216,7 +229,12 @@ export default function EditProfile() {
               type="text"
               placeholder="Where you at?"
               value={profileUpdateVal.location}
-              handleChange={handleInput}
+              handleChange={(e) =>
+                setProfileUpdateVal({
+                  ...profileUpdateVal,
+                  location: e.target.value,
+                })
+              }
             />
           </div>
         </div>

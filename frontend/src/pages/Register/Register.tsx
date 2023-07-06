@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../reduxHooks";
 import { setToken, setIsReg } from "../../store/features/authSlice";
 import Loader from "../../components/ui/Loader";
 import FormInput from "../../components/form/FormInput";
+import AppButton from "../../components/ui/AppButton";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -73,7 +74,7 @@ export default function Register() {
   }
 
   //Register user
-  const [registerUser, { isLoading: Registering, error: registerError }] =
+  const [registerUser, { isLoading: registering, error: registerError }] =
     useRegisterUserMutation();
 
   //Error
@@ -102,7 +103,7 @@ export default function Register() {
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(30rem,90%)] justify-self-center py-8 relative">
+    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(28rem,90%)] justify-self-center py-8 relative">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
@@ -115,7 +116,7 @@ export default function Register() {
           </p>
         </div>
         <form
-          className="regForm grid gap-5 [&>*:nth-child(5)_.formIcon]:top-[0.85rem]"
+          className="grid gap-5 [&>*:nth-child(5)_.formIcon]:top-[0.85rem]"
           onSubmit={handleRegister}
         >
           {regFormArray.map((input) => (
@@ -132,16 +133,30 @@ export default function Register() {
           {registerError && (
             <p className="text-red-400 text-sm">{registerErrorMsg}</p>
           )}
-          <button className="socioViewBtns py-3">Create Account</button>
+          <AppButton
+            label="Create Account"
+            height="10"
+            isLoading={registering}
+            isDisabled={
+              registerDetails.email &&
+              registerDetails.name &&
+              registerDetails.password &&
+              registerDetails.confirmPassword
+                ? false
+                : true
+            }
+          />
         </form>
       </div>
       <div className="flex gap-2">
         <p>Already have an account?</p>
-        <Link to="/login" className="text-[#0caa49]">
-          Login
-        </Link>
+        <AppButton
+          label="Login"
+          regular={true}
+          handleClick={() => navigate("/login")}
+        />
       </div>
-      {Registering && (
+      {registering && (
         <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
           <Loader />
         </div>
