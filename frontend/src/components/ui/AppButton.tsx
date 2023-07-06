@@ -23,7 +23,7 @@ export default function AppButton({
       className={
         regular
           ? "text-[#0caa49]"
-          : `text-white bg-[#0caa41] text-sm ${width} h-${height} rounded-md transition disabled:bg-[#0caa4138] ${
+          : `text-white bg-[#0caa41] text-sm ${width} h-${height} rounded-md transition disabled:opacity-20 ${
               !isDisabled && "hover:bg-[#03d048]"
             }`
       }

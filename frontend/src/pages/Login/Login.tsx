@@ -7,7 +7,6 @@ import AuthContext from "../../context/AuthContext";
 import { useAppDispatch } from "../../reduxHooks";
 import { setIsReg, setToken } from "../../store/features/authSlice";
 import FormInput from "../../components/form/FormInput";
-import Loader from "../../components/ui/Loader";
 import AppButton from "../../components/ui/AppButton";
 
 export default function Login() {
@@ -44,7 +43,10 @@ export default function Login() {
   });
 
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
-    setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value.trim() });
+    setLoginDetails({
+      ...loginDetails,
+      [e.target.name]: e.target.value.trim(),
+    });
   }
 
   //login
@@ -69,7 +71,7 @@ export default function Login() {
   }
 
   return (
-    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(28rem,90%)] justify-self-center py-8 relative">
+    <div className="grid justify-items-center content-center text-slate-200 gap-8 w-[min(28rem,90%)] justify-self-center py-8">
       <Link to="/" className="logo flex items-center gap-5">
         <img src={logoIcon} alt="" className="w-10" />
         <p className="text-3xl">SOCIOVIEW</p>
@@ -92,14 +94,16 @@ export default function Login() {
             />
           ))}
           {loginError && (
-            <p className="text-red-400 text-sm">{loginErrorMsg}</p>
+            <p className="text-red-400 text-sm text-center">{loginErrorMsg}</p>
           )}
           <AppButton
             label="Login"
             height="10"
             isLoading={loggingIn}
             isDisabled={
-              loginDetails.emailOrUsername && loginDetails.password
+              loginDetails.emailOrUsername &&
+              loginDetails.password &&
+              loggingIn === false
                 ? false
                 : true
             }
@@ -114,11 +118,6 @@ export default function Login() {
           handleClick={() => navigate("/register")}
         />
       </div>
-      {loggingIn && (
-        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
-          <Loader />
-        </div>
-      )}
     </div>
   );
 }

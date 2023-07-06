@@ -6,7 +6,6 @@ import { useUsernameSettingMutation } from "../../services/appApi";
 import AuthContext from "../../context/AuthContext";
 import { useAppSelector } from "../../reduxHooks";
 import { BsPerson } from "react-icons/bs";
-import Loader from "../../components/ui/Loader";
 import AppButton from "../../components/ui/AppButton";
 
 export default function ChooseUsername() {
@@ -68,13 +67,15 @@ export default function ChooseUsername() {
             value={newUsername}
           />
           {chooseUsernameError && (
-            <p className="text-red-400 text-sm">{chooseUsernameErrorMsg}</p>
+            <p className="text-red-400 text-sm text-center">
+              {chooseUsernameErrorMsg}
+            </p>
           )}
           <AppButton
             label="Next"
             height="10"
             isLoading={settingUsername}
-            isDisabled={newUsername ? false : true}
+            isDisabled={newUsername && settingUsername === false ? false : true}
           />
           <AppButton
             label="Skip"
@@ -83,11 +84,6 @@ export default function ChooseUsername() {
           />
         </form>
       </div>
-      {settingUsername && (
-        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
-          <Loader />
-        </div>
-      )}
     </div>
   );
 }

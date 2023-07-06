@@ -109,7 +109,9 @@ export default function Avatar() {
             label="Finish"
             height="10"
             isLoading={settingProfilePic}
-            isDisabled={newProfilePic ? false : true}
+            isDisabled={
+              newProfilePic && settingProfilePic === false ? false : true
+            }
           />
           <AppButton
             label="Skip"
@@ -118,11 +120,6 @@ export default function Avatar() {
           />
         </form>
       </div>
-      {settingProfilePic && (
-        <div className="absolute h-full w-full bg-[#121212a8] grid justify-center items-center">
-          <Loader />
-        </div>
-      )}
     </div>
   );
 }

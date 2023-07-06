@@ -23,7 +23,8 @@ export default function ProfileSummary({
   const token = useAppSelector((state) => state.auth.token);
 
   //Handle Follow and Unfollow requests
-  const [updateFollow] = useUpdateFollowMutation();
+  const [updateFollow, { isLoading: updatingFollow }] =
+    useUpdateFollowMutation();
 
   //Image modal
   const dispatch = useAppDispatch();
@@ -50,9 +51,17 @@ export default function ProfileSummary({
                 handleClick={() => navigate("/settings/profile")}
               />
             ) : (
-              <button
-                className={`text-[#0caa49]`}
-                onClick={() =>
+              <AppButton
+                regular={true}
+                label={
+                  currentUser.following.some(
+                    (userId) => userId == profileOwner._id
+                  )
+                    ? "Unfollow"
+                    : "Follow"
+                }
+                isLoading={updatingFollow}
+                handleClick={() =>
                   updateFollow({
                     userId: currentUser._id,
                     followId: profileOwner._id,
@@ -61,11 +70,7 @@ export default function ProfileSummary({
                     .unwrap()
                     .then((result) => setCurrentUser(result))
                 }
-              >
-                {profileOwner.followers.some((item) => item === currentUser._id)
-                  ? "Unfollow"
-                  : "Follow"}
-              </button>
+              />
             )}
           </div>
           <p className="text-slate-500">@{profileOwner.username}</p>
