@@ -1,7 +1,6 @@
 import logoIcon from "../../assets/img/socioview.png";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import Loader from "../../components/ui/Loader";
 import AuthContext from "../../context/AuthContext";
 import { useAppDispatch, useAppSelector } from "../../reduxHooks";
 import { useUploadToCloudinaryMutation } from "../../services/cloudinaryApi";
