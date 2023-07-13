@@ -18,6 +18,7 @@ export const Register = async (req, res) => {
     //Generate random username from email
     const generatedUsername = generateFromEmail(email, 3);
 
+    //Hash password
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
@@ -50,7 +51,7 @@ export const Register = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(400).json(err.message);
   }
 };
 
@@ -87,7 +88,7 @@ export const Login = async (req, res) => {
       token,
     });
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(401).json(err.message);
   }
 };
 
@@ -124,7 +125,7 @@ export const usernameSetting = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(400).json(err.message);
   }
 };
 
@@ -161,7 +162,7 @@ export const emailSetting = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).json(err.message);
+    res.status(400).json(err.message);
   }
 };
 
@@ -169,7 +170,6 @@ export const emailSetting = async (req, res) => {
 export const searchUsers = async (req, res) => {
   try {
     const keyword = req.query.keyword;
-    console.log(keyword);
     const users = await User.find({
       $or: [
         {
@@ -189,7 +189,7 @@ export const searchUsers = async (req, res) => {
 
     res.status(200).json(users);
   } catch (error) {
-    res.status(204).json(error.msg);
+    res.status(204).json(error.message);
   }
 };
 
@@ -213,6 +213,6 @@ export const changePassword = async (req, res) => {
     await user.save();
     res.status(200).json("Changed successfully");
   } catch (err) {
-    res.status(204).json(err.msg);
+    res.status(204).json(err.message);
   }
 };

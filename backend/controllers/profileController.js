@@ -160,6 +160,6 @@ export const whoToFollow = async (req, res) => {
 
     res.status(200).json(whoToFollow);
   } catch (err) {
-    res.status(204).json(err.msg);
+    res.status(204).json(err.message);
   }
 };
