@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Bruno+Ace&display=swap");
+
+::-webkit-resizer {
+  display: none;
+}
+
+:last-child:has(button){}
+
+/* Change Autocomplete styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  border: 1px solid #334155;
+  -webkit-text-fill-color: rgb(219, 224, 232);
+  -webkit-box-shadow: 0 0 0px 1000px rgb(51, 65, 85) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+html {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Hind Siliguri", sans-serif;
+  background-color: #082813;
+  background-color: #000502;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
+.app {
+  display: grid;
+  height: 100%;
+}
+
+.noBKGBtn {
+  border: 1px solid #0caa41;
+  color: rgb(171, 171, 180);
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    color: #0caa41;
+    transition: 0.5s ease;
+  }
+}
+
+.activeSidebar {
+  color: #08f15688;
+}
+
+.logo p {
+  font-family: "Bruno Ace", cursive;
+}
+
+.navProfileMenu {
+  z-index: 40 !important;
+}
+
+.modal {
+  background-color: rgba(155, 155, 226, 0.319);
+}
+
+//Form validation style
+.regDiv {
+  display: grid;
+  height: 0;
+}
+
+.formInput:invalid[data-input="true"] ~ .regDiv {
+  height: unset;
+}
+
+.formInput:invalid[data-input="true"] ~ .formIcon {
+  color: rgb(248 113 113);
+}
+
+// .regForm > :nth-child(6) .formIcon {
+//   margin-top: 10.9rem;
+// }
+
+// .changePassword {
+//   background-color: rgba(128, 128, 128, 0.493);
+// }

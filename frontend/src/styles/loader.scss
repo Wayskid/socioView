@@ -1,0 +1,30 @@
+.loader {
+  .secondSquare {
+    animation-delay: 0.1s;
+  }
+  .thirdSquare {
+    animation-delay: 0.2s;
+  }
+}
+
+/* Animations */
+@keyframes bounce1 {
+  from,
+  to {
+    translate: 0;
+    animation-timing-function: ease-in;
+  }
+  45% {
+    translate: 0 0.5em;
+    animation-timing-function: linear;
+  }
+  50% {
+    translate: 0 0.5em;
+    animation-timing-function: linear;
+  }
+  55% {
+    translate: 0 0.5em;
+    animation-timing-function: ease-out;
+  }
+}
+
